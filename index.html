@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth" id="html-root">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ives FASSINOU — Développeur Web & Juriste Digital</title>
+  <meta name="description" content="Portfolio minimaliste d'Ives FASSINOU — Développeur web, automatiseur N8N et juriste digital basé au Bénin." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://fiab.website/" />
+  
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fiab.website/" />
+  <meta property="og:title" content="Ives FASSINOU — Développeur Web & Juriste Digital" />
+  <meta property="og:description" content="Découvrez mon portfolio de créations digitales, applications SaaS et intégration." />
+  <meta property="og:image" content="https://fiab.website/fiab-profil.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ives FASSINOU — Développeur Web" />
+  <meta name="twitter:description" content="Découvrez mon portfolio de créations digitales et applications SaaS." />
+  <meta name="twitter:image" content="https://fiab.website/fiab-profil.png" />
+
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- AOS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+  <!-- Google Fonts : Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <script>
+    // le thème avant rendu
+    (function () {
+      if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light');
+    })();
+  </script>
+</head>
+
+<body class="antialiased selection:bg-white selection:text-black">
+
+  <!-- ═══════════════ Ma NAVBAR ═══════════════ -->
+  <nav class="nav-backdrop fixed top-0 left-0 right-0 z-50 px-6 py-5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+      <!-- Logo Ultra Minimal -->
+      <a href="#accueil" class="text-xl font-bold tracking-tighter text-var">FIAB.</a>
+
+      <div class="hidden md:flex items-center gap-12 text-sm font-light tracking-wide text-muted-var">
+        <a href="#projets" class="nav-link text-var transition-colors">Projets</a>
+        <a href="#apropos" class="nav-link text-var transition-colors">Bio</a>
+        <a href="#contact" class="nav-link text-var transition-colors">Contact</a>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- Toggle thème propre -->
+        <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Changer le thème">
+          <span id="themeIcon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </span>
+        </button>
+        <a href="#contact" class="hidden md:inline-flex btn-primary px-6 py-2.5 text-xs uppercase tracking-widest">
+          Démarrer
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+  <!-- ═══════════════ HERO (FULL SCREEN avex mon min) ═══════════════ -->
+  <section id="accueil" class="min-h-screen flex flex-col items-center justify-center relative px-6">
+
+    <div class="text-center w-full max-w-5xl mx-auto mt-10">
+
+      <div data-aos="fade-down" data-aos-duration="1000">
+        <div class="hero-avatar-wrapper mb-8">
+          <div class="hero-avatar-inner">
+            <img src="fiab-profil.png" alt="Ives FASSINOU" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Label très aéré -->
+      <p class="text-[10px] md:text-xs uppercase tracking-[0.3em] text-muted-var mb-6" data-aos="fade-up"
+        data-aos-delay="200">
+        Portfolio de
+      </p>
+
+      <!-- Grosse typo ultra clean -->
+      <h1 class="text-6xl md:text-8xl lg:text-[9rem] font-light tracking-tighter leading-none mb-6 text-var"
+        data-aos="fade-up" data-aos-delay="400">
+        Ives <span class="font-semibold text-var">Fassinou</span>
+      </h1>
+
+      <div class="h-8 flex items-center justify-center mb-16" data-aos="fade-up" data-aos-delay="600">
+        <span id="roleText" class="typewriter text-xl md:text-2xl font-light text-muted-var"></span>
+      </div>
+
+    </div>
+
+    <!-- Scroll Indicator Reconnaissable -->
+    <div class="absolute bottom-10 flex flex-col items-center gap-3 opacity-60 hover:opacity-100 transition-opacity"
+      data-aos="fade-up" data-aos-delay="1200">
+      <span class="text-[9px] uppercase tracking-[0.3em] text-muted-var">Découvrir</span>
+      <div class="w-6 h-10 rounded-full flex justify-center pt-2 hover:cursor-pointer"
+        onclick="window.location.href='#projets';">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5E00"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-arrow-up-from-dot-icon lucide-arrow-up-from-dot">
+          <path d="m5 9 7-7 7 7" />
+          <path d="M12 16V2" />
+          <circle cx="12" cy="21" r="1" />
+        </svg>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════ PROJETS (GRID CLEAN) ═══════════════ -->
+  <section id="projets" class="py-32 md:py-48 px-6">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="mb-20 md:mb-32 flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-4" data-aos="fade-right">01 / Réalisations</p>
+          <h2 class="text-4xl md:text-6xl font-light tracking-tight text-var leading-tight" data-aos="fade-right"
+            data-aos-delay="100">
+            Travaux<br /><span class="font-semibold">Sélectionnés</span>
+          </h2>
+        </div>
+        <p class="text-muted-var font-light max-w-sm" data-aos="fade-left" data-aos-delay="200">
+          Une curation de projets récents alliant design, code et stratégie.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-10 md:gap-16">
+
+        <!-- Projet 1 -->
+        <a href="https://livraison.website" target="_blank" rel="noopener noreferrer" class="block group" data-aos="fade-up">
+          <div
+            class="project-card mb-6 relative overflow-hidden aspect-video border-none shadow-[0_0_0_1px_rgba(255,255,255,0.08)]">
+            <img src="fiab-gestion.png" alt="FIAB Gestion" loading="lazy"
+              class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500"></div>
+            <div class="absolute top-4 left-4">
+              <span
+                class="text-[10px] tracking-widest uppercase bg-black/60 text-white px-3 py-1 rounded-full backdrop-blur-md border border-white/10">SaaS
+                App</span>
+            </div>
+          </div>
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h3 class="text-2xl font-light text-var mb-2 group-hover:gold-highlight transition-colors">FIAB Gestion
+              </h3>
+              <p class="text-sm text-muted-var font-light leading-relaxed">Plateforme SaaS complète permettant aux
+                entreprises de gérer leurs livraisons, livreurs et tout en temps réel.</p>
+            </div>
+            <div
+              class="shrink-0 w-10 h-10 rounded-full border border-var flex items-center justify-center text-var group-hover:bg-var group-hover:border-var transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Projet 2 -->
+        <a href="#contact" class="block group" data-aos="fade-up" data-aos-delay="150" style="margin-top: 5%;">
+          <div
+            class="project-card mb-6 relative overflow-hidden aspect-video border-none shadow-[0_0_0_1px_rgba(255,255,255,0.08)]">
+            <img src="fikeno.png" alt="Fikeno Voyage" loading="lazy"
+              class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-500"></div>
+            <div class="absolute top-4 left-4">
+              <span
+                class="text-[10px] tracking-widest uppercase bg-black/60 text-white px-3 py-1 rounded-full backdrop-blur-md border border-white/10">Plugin
+                WP</span>
+            </div>
+          </div>
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h3 class="text-2xl font-light text-var mb-2 group-hover:gold-highlight transition-colors">Fikeno Voyage
+              </h3>
+              <p class="text-sm text-muted-var font-light leading-relaxed">Plugin WordPress sur-mesure pour les agences
+                de voyages : gestion des départs, réservations, admin et emails.</p>
+            </div>
+            <div
+              class="shrink-0 w-10 h-10 rounded-full border border-var flex items-center justify-center text-var group-hover:bg-var group-hover:border-var transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ BIO / EXPERTISE ═══════════════ -->
+  <section id="apropos" class="py-32 md:py-48 px-6 bg-subtle-var border-y border-var">
+    <div class="max-w-5xl mx-auto">
+      <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-8 text-center" data-aos="fade-up">02 / Expertise
+      </p>
+
+      <h2
+        class="text-3xl md:text-5xl lg:text-6xl font-light text-var leading-snug md:leading-tight text-center max-w-4xl mx-auto mb-20"
+        data-aos="fade-up" data-aos-delay="100">
+        Un profil hybride combinant la logique du <span class="font-semibold">développement web</span> et la rigueur du
+        <span class="font-semibold">Droit privé</span>.
+      </h2>
+
+      <div class="grid md:grid-cols-3 gap-12 text-center md:text-left border-t border-var pt-16">
+
+        <div data-aos="fade-up" data-aos-delay="200">
+          <h4 class="text-sm uppercase tracking-widest text-var mb-4">Ingénierie Web</h4>
+          <p class="text-muted-var font-light leading-relaxed text-sm">
+            Développement d'applications modernes, d'environnements SaaS et intégration WordPress robuste. Institut de
+            Multimédia Appliqué de Parakou.
+          </p>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="300">
+          <h4 class="text-sm uppercase tracking-widest text-var mb-4">Automatisation N8N</h4>
+          <p class="text-muted-var font-light leading-relaxed text-sm">
+            Création de flux de travail intelligents et automatisation des processus via des solutions no-code /
+            bas-niveau.
+          </p>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="400">
+          <h4 class="text-sm uppercase tracking-widest text-var mb-4">Juriste Digital</h4>
+          <p class="text-muted-var font-light leading-relaxed text-sm">
+            Licencié en Droit Privé à Parakou. Une compréhension fine des enjeux contractuels et numériques dans chaque
+            projet.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ CONTACT (ULTRA CLEAN FORM) ═══════════════ -->
+  <section id="contact" class="py-32 md:py-48 px-6">
+    <div class="max-w-5xl mx-auto">
+
+      <div class="grid md:grid-cols-2 gap-20">
+
+        <!-- Infos -->
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-4" data-aos="fade-right">03 / Démarrer</p>
+          <h2 class="text-5xl md:text-7xl font-light tracking-tight text-var leading-none mb-10" data-aos="fade-right"
+            data-aos-delay="100">
+            Discutons<br /><span class="font-semibold">Idées.</span>
+          </h2>
+
+          <div class="space-y-6" data-aos="fade-right" data-aos-delay="200">
+            <div>
+              <p class="text-xs uppercase tracking-widest text-muted-var mb-1">Email</p>
+              <a href="mailto:contact@fiab.website"
+                class="text-xl md:text-2xl text-var hover:text-muted-var transition-colors font-light">contact@fiab.website</a>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-widest text-muted-var mb-1">WhatsApp</p>
+              <a href="https://wa.me/+2290155737210" target="_blank" rel="noopener noreferrer"
+                class="text-xl md:text-2xl text-var hover:text-muted-var transition-colors font-light">+229 01 55 73 72
+                10</a>
+            </div>
+          </div>
+
+          <div class="flex gap-6 mt-16" data-aos="fade-right" data-aos-delay="300">
+            <a href="https://www.linkedin.com/in/fiab-entreprise" target="_blank" rel="noopener noreferrer"
+              class="text-sm tracking-widest uppercase text-muted-var hover:text-var transition-colors">LinkedIn</a>
+            <a href="https://web.facebook.com/FassinouIves" target="_blank" rel="noopener noreferrer"
+              class="text-sm tracking-widest uppercase text-muted-var hover:text-var transition-colors">Facebook</a>
+          </div>
+        </div>
+
+        <!-- Form minimaliste -->
+        <div data-aos="fade-left" data-aos-delay="200" class="flex flex-col justify-center">
+          <form onsubmit="event.preventDefault(); handleSend();" class="space-y-10">
+
+            <div class="relative">
+              <input type="text" id="contactName" placeholder="Comment vous appelle-t-on ?"
+                class="input-minimal w-full py-4 text-lg font-light" required />
+            </div>
+
+            <div class="relative">
+              <input type="email" id="contactEmail" placeholder="Où puis-je vous répondre ?"
+                class="input-minimal w-full py-4 text-lg font-light" required />
+            </div>
+
+            <div class="relative">
+              <textarea id="contactMsg" placeholder="Parlez-moi de votre projet..." rows="3"
+                class="input-minimal w-full py-4 text-lg font-light resize-none" required></textarea>
+            </div>
+
+            <button id="sendBtn" type="submit"
+              class="btn-primary px-10 py-5 w-full text-sm uppercase tracking-widest mt-4">
+              Envoyer le message →
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="py-10 px-6 border-t border-var text-center">
+    <p class="text-[10px] md:text-xs tracking-[0.2em] font-light text-muted-var uppercase">
+      Ives Fassinou — Tous droits réservés.
+    </p>
+  </footer>
+
+  <!-- ═══════════════ SCRIPTS ═══════════════ -->
+  <script>
+    // Initialisation douce de AOS
+    AOS.init({ once: true, easing: 'ease-out-cubic', duration: 1000, offset: 50, disable: 'mobile' });
+
+    // Typwriter très net
+    const roles = ['Développeur Web', 'Juriste Digital', 'Automatiseur N8N', 'Vibe Coder'];
+    let ri = 0, ci = 0, deleting = false;
+    const tw = document.getElementById('roleText');
+
+    function typeLoop() {
+      const current = roles[ri];
+      if (!deleting) {
+        tw.textContent = current.slice(0, ++ci);
+        if (ci === current.length) { deleting = true; setTimeout(typeLoop, 2500); return; }
+      } else {
+        tw.textContent = current.slice(0, --ci);
+        if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
+      }
+      setTimeout(typeLoop, deleting ? 30 : 80);
+    }
+    setTimeout(typeLoop, 1500);
+
+    // Toggle du thème avec les bonnes icônes
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      const MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      const SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+
+      if (html.classList.contains('light')) {
+        html.classList.remove('light');
+        icon.innerHTML = MOON;
+        localStorage.setItem('theme', 'dark');
+      } else {
+        html.classList.add('light');
+        icon.innerHTML = SUN;
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    // Initialiser la bonne icône au load
+    (function () {
+      const SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+      if (localStorage.getItem('theme') === 'light') {
+        document.getElementById('themeIcon').innerHTML = SUN;
+      }
+    })();
+
+    // Envoyer
+    function handleSend() {
+      const nom = document.getElementById('contactName').value;
+      const email = document.getElementById('contactEmail').value;
+      const msg = document.getElementById('contactMsg').value;
+      const btn = document.getElementById('sendBtn');
+
+      // Format the message for WhatsApp URL
+      const texte = `Bonjour Ives, je suis ${nom} (${email}).%0A%0AVoici mon message :%0A${msg}`;
+
+      // Redirect to wa.me with the message
+      window.open(`https://wa.me/+2290155737210?text=${texte}`, '_blank');
+
+      btn.textContent = 'Ouverture de WhatsApp...';
+      btn.style.background = 'var(--text)';
+      btn.style.color = 'var(--bg)';
+
+      setTimeout(() => {
+        btn.textContent = 'Envoyer le message →';
+        // Reset styles if needed, or clear form
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactEmail').value = '';
+        document.getElementById('contactMsg').value = '';
+      }, 4000);
+    }
+  </script>
+
+</body>
+
+</html>
