@@ -1,0 +1,18 @@
+# !fiab : directives d indexation des robots et agents ia
+User-agent: *
+Allow: /
+
+# !fiab : robots ia specialises
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://fiab.website/sitemap.xml

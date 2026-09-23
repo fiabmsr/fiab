@@ -1,0 +1,7 @@
+# !fiab : fichiers ignores par git
+README.md
+readme.md
+*.log
+.DS_Store
+Thumbs.db
+.gemini/

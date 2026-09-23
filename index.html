@@ -4,330 +4,483 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ives FASSINOU — Développeur Web & Juriste Digital</title>
-  <meta name="description" content="Portfolio minimaliste d'Ives FASSINOU — Développeur web, automatiseur N8N et juriste digital basé au Bénin." />
+  <!-- !fiab : metadonnees de securite -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <title>Ives FASSINOU | Développeur web, d'automatisation et Juriste</title>
+  <meta name="description" content="Portfolio officiel d'Ives FASSINOU (FIAB Web Identity). Développeur web Laravel et Django, automaticien n8n, major de promotion IMA 2025 et juriste au Bénin." />
+  <meta name="author" content="Ives Fassinou" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://fiab.website/" />
   
   <link rel="icon" type="image/png" href="favicon.png" />
 
+  <!-- !fiab : metadonnees opengraph pour partages reseaux sociaux -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://fiab.website/" />
-  <meta property="og:title" content="Ives FASSINOU — Développeur Web & Juriste Digital" />
-  <meta property="og:description" content="Découvrez mon portfolio de créations digitales, applications SaaS et intégration." />
-  <meta property="og:image" content="https://fiab.website/fiab-profil.png" />
+  <meta property="og:title" content="Ives FASSINOU | Développeur web, d'automatisation et Juriste" />
+  <meta property="og:description" content="Développeur web fullstack Laravel et Django, automaticien n8n, major de promotion IMA 2025 et juriste au Bénin." />
+  <meta property="og:image" content="https://fiab.website/fiab-ives-fassinou.png" />
+  <meta property="og:locale" content="fr_FR" />
 
+  <!-- !fiab : twitter cards pour reseaux -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Ives FASSINOU — Développeur Web" />
-  <meta name="twitter:description" content="Découvrez mon portfolio de créations digitales et applications SaaS." />
-  <meta name="twitter:image" content="https://fiab.website/fiab-profil.png" />
+  <meta name="twitter:title" content="Ives FASSINOU | Développeur web, d'automatisation et Juriste" />
+  <meta name="twitter:description" content="Développeur web fullstack, automaticien n8n et juriste au Bénin." />
+  <meta name="twitter:image" content="https://fiab.website/fiab-ives-fassinou.png" />
 
-  <!-- Tailwind CSS -->
+  <!-- !fiab : donnees structurees schema org pour moteurs de recherche et agents ia -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://fiab.website/#person",
+        "name": "Ives Fassinou",
+        "url": "https://fiab.website/",
+        "image": "https://fiab.website/fiab-ives-fassinou.png",
+        "jobTitle": "Développeur web, d'automatisation et Juriste",
+        "alumniOf": [
+          {
+            "@type": "EducationalOrganization",
+            "name": "Institut de Multimédia Appliqué de Parakou"
+          },
+          {
+            "@type": "EducationalOrganization",
+            "name": "Université de Parakou"
+          }
+        ],
+        "knowsAbout": [
+          "Laravel",
+          "PHP",
+          "Django",
+          "Python",
+          "n8n",
+          "Automatisation de processus métiers",
+          "Droit privé",
+          "Droit des affaires"
+        ],
+        "sameAs": [
+          "https://www.linkedin.com/in/fiab-entreprise",
+          "https://web.facebook.com/FassinouIves"
+        ]
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://fiab.website/#organization",
+        "name": "FIAB Web Identity",
+        "url": "https://fiab.website/",
+        "founder": {
+          "@id": "https://fiab.website/#person"
+        },
+        "description": "Entreprise individuelle de conception web, d'automatisation de processus métiers n8n et de conseil juridique par Ives Fassinou.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Parakou",
+          "addressCountry": "BJ"
+        },
+        "priceRange": "$$"
+      }
+    ]
+  }
+  </script>
+
+  <!-- !fiab : chargement de tailwind css -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primaire: 'var(--couleur-primaire)',
+          },
+          fontFamily: {
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- !fiab : feuille de style du projet -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- AOS -->
+  <!-- !fiab : bibliotheque d animations aos -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
-  <!-- Google Fonts : Montserrat -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap"
-    rel="stylesheet" />
+  <!-- !fiab : police montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <script>
-    // le thème avant rendu
+    // !fiab : initialisation du theme avant l affichage
     (function () {
       if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light');
     })();
   </script>
 </head>
 
-<body class="antialiased selection:bg-white selection:text-black">
+<body class="antialiased selection:bg-primaire selection:text-white">
 
-  <!-- ═══════════════ Ma NAVBAR ═══════════════ -->
+  <!-- !fiab : barre de navigation principale -->
   <nav class="nav-backdrop fixed top-0 left-0 right-0 z-50 px-6 py-5">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
 
-      <!-- Logo Ultra Minimal -->
-      <a href="#accueil" class="text-xl font-bold tracking-tighter text-var">FIAB.</a>
+      <a href="#accueil" class="flex items-center gap-2">
+        <span class="text-xl font-bold tracking-tighter text-var">FIAB.</span>
+        <span class="text-[10px] tracking-widest uppercase px-2 py-0.5 rounded border border-var text-muted-var">Web Identity</span>
+      </a>
 
-      <div class="hidden md:flex items-center gap-12 text-sm font-light tracking-wide text-muted-var">
-        <a href="#projets" class="nav-link text-var transition-colors">Projets</a>
-        <a href="#apropos" class="nav-link text-var transition-colors">Bio</a>
-        <a href="#contact" class="nav-link text-var transition-colors">Contact</a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-light tracking-wide text-muted-var">
+        <a href="#accueil" class="nav-link text-var transition-colors">Accueil</a>
+        <a href="#projets" class="nav-link text-var transition-colors">Réalisations</a>
+        <a href="#engagements" class="nav-link text-var transition-colors">En cours</a>
+        <a href="/services/" class="nav-link text-var transition-colors">Services</a>
+        <a href="#parcours" class="nav-link text-var transition-colors">Parcours</a>
+        <a href="/contact/" class="nav-link text-var transition-colors">Contact</a>
       </div>
 
       <div class="flex items-center gap-4">
-        <!-- Toggle thème propre -->
+        <!-- !fiab : bouton de bascule sombre et clair -->
         <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Changer le thème">
           <span id="themeIcon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-              stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           </span>
         </button>
-        <a href="#contact" class="hidden md:inline-flex btn-primary px-6 py-2.5 text-xs uppercase tracking-widest">
-          Démarrer
+        <a href="/contact/" class="hidden md:inline-flex btn-primary px-6 py-2.5 text-xs uppercase tracking-widest">
+          Me contacter
         </a>
       </div>
     </div>
   </nav>
 
   <main>
-  <!-- ═══════════════ HERO (FULL SCREEN avex mon min) ═══════════════ -->
-  <section id="accueil" class="min-h-screen flex flex-col items-center justify-center relative px-6">
+    <!-- !fiab : section hero pure et aeree -->
+    <section id="accueil" class="min-h-screen flex flex-col items-center justify-center relative px-6 pt-24 pb-16">
+      <div class="text-center w-full max-w-5xl mx-auto">
 
-    <div class="text-center w-full max-w-5xl mx-auto mt-10">
-
-      <div data-aos="fade-down" data-aos-duration="1000">
-        <div class="hero-avatar-wrapper mb-8">
-          <div class="hero-avatar-inner">
-            <img src="fiab-profil.png" alt="Ives FASSINOU" />
+        <div data-aos="fade-down" data-aos-duration="1000">
+          <div class="hero-avatar-wrapper mb-8">
+            <div class="hero-avatar-inner">
+              <img src="fiab-ives-fassinou.png" alt="Ives FASSINOU" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Label très aéré -->
-      <p class="text-[10px] md:text-xs uppercase tracking-[0.3em] text-muted-var mb-6" data-aos="fade-up"
-        data-aos-delay="200">
-        Portfolio de
-      </p>
-
-      <!-- Grosse typo ultra clean -->
-      <h1 class="text-6xl md:text-8xl lg:text-[9rem] font-light tracking-tighter leading-none mb-6 text-var"
-        data-aos="fade-up" data-aos-delay="400">
-        Ives <span class="font-semibold text-var">Fassinou</span>
-      </h1>
-
-      <div class="h-8 flex items-center justify-center mb-16" data-aos="fade-up" data-aos-delay="600">
-        <span id="roleText" class="typewriter text-xl md:text-2xl font-light text-muted-var"></span>
-      </div>
-
-    </div>
-
-    <!-- Scroll Indicator Reconnaissable -->
-    <div class="absolute bottom-10 flex flex-col items-center gap-3 opacity-60 hover:opacity-100 transition-opacity"
-      data-aos="fade-up" data-aos-delay="1200">
-      <span class="text-[9px] uppercase tracking-[0.3em] text-muted-var">Découvrir</span>
-      <div class="w-6 h-10 rounded-full flex justify-center pt-2 hover:cursor-pointer"
-        onclick="window.location.href='#projets';">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5E00"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-arrow-up-from-dot-icon lucide-arrow-up-from-dot">
-          <path d="m5 9 7-7 7 7" />
-          <path d="M12 16V2" />
-          <circle cx="12" cy="21" r="1" />
-        </svg>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- ═══════════════ PROJETS (GRID CLEAN) ═══════════════ -->
-  <section id="projets" class="py-32 md:py-48 px-6">
-    <div class="max-w-7xl mx-auto">
-
-      <div class="mb-20 md:mb-32 flex flex-col md:flex-row md:items-end justify-between gap-8">
-        <div>
-          <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-4" data-aos="fade-right">01 / Réalisations</p>
-          <h2 class="text-4xl md:text-6xl font-light tracking-tight text-var leading-tight" data-aos="fade-right"
-            data-aos-delay="100">
-            Travaux<br /><span class="font-semibold">Sélectionnés</span>
-          </h2>
-        </div>
-        <p class="text-muted-var font-light max-w-sm" data-aos="fade-left" data-aos-delay="200">
-          Une curation de projets récents alliant design, code et stratégie.
+        <!-- !fiab : label epure -->
+        <p class="text-[10px] md:text-xs uppercase tracking-[0.3em] text-muted-var mb-6" data-aos="fade-up" data-aos-delay="200">
+          FIAB Web Identity
         </p>
+
+        <!-- !fiab : typographie principale nette -->
+        <h1 class="text-6xl md:text-8xl lg:text-[8.5rem] font-light tracking-tighter leading-none mb-6 text-var" data-aos="fade-up" data-aos-delay="400">
+          Ives <span class="font-semibold text-var">Fassinou</span>
+        </h1>
+
+        <!-- !fiab : typewriter sobre -->
+        <div class="h-8 flex items-center justify-center mb-10" data-aos="fade-up" data-aos-delay="600">
+          <span id="roleText" class="typewriter text-xl md:text-2xl font-light text-muted-var"></span>
+        </div>
+
+        <p class="max-w-2xl mx-auto text-sm md:text-base text-muted-var font-light leading-relaxed mb-10" data-aos="fade-up" data-aos-delay="700">
+          Développeur web en Laravel et Django, spécialiste de l'automatisation de processus n8n et juriste en droit privé. Major de promotion IMA 2025.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8" data-aos="fade-up" data-aos-delay="800">
+          <a href="/services/" class="btn-primary px-8 py-3.5 text-xs uppercase tracking-widest w-full sm:w-auto">
+            Découvrir mes services
+          </a>
+          <a href="#projets" class="btn-outline px-8 py-3.5 text-xs uppercase tracking-widest w-full sm:w-auto">
+            Voir mes réalisations
+          </a>
+        </div>
+
       </div>
 
-      <div class="grid md:grid-cols-2 gap-10 md:gap-16">
-
-        <!-- Projet 1 -->
-        <a href="https://livraison.website" target="_blank" rel="noopener noreferrer" class="block group" data-aos="fade-up">
-          <div
-            class="project-card mb-6 relative overflow-hidden aspect-video border-none shadow-[0_0_0_1px_rgba(255,255,255,0.08)]">
-            <img src="fiab-gestion.png" alt="FIAB Gestion" loading="lazy"
-              class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500"></div>
-            <div class="absolute top-4 left-4">
-              <span
-                class="text-[10px] tracking-widest uppercase bg-black/60 text-white px-3 py-1 rounded-full backdrop-blur-md border border-white/10">SaaS
-                App</span>
-            </div>
-          </div>
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <h3 class="text-2xl font-light text-var mb-2 group-hover:gold-highlight transition-colors">FIAB Gestion
-              </h3>
-              <p class="text-sm text-muted-var font-light leading-relaxed">Plateforme SaaS complète permettant aux
-                entreprises de gérer leurs livraisons, livreurs et tout en temps réel.</p>
-            </div>
-            <div
-              class="shrink-0 w-10 h-10 rounded-full border border-var flex items-center justify-center text-var group-hover:bg-var group-hover:border-var transition-all">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </div>
-          </div>
+      <!-- !fiab : indicateur de defilement avec couleur primaire orange -->
+      <div class="absolute bottom-8 flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity" data-aos="fade-up" data-aos-delay="1000">
+        <span class="text-[9px] uppercase tracking-[0.3em] text-muted-var">Explorer</span>
+        <a href="#projets" class="w-6 h-6 flex justify-center text-primaire" aria-label="Defiler vers les projets">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--couleur-primaire)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14" />
+            <path d="m19 12-7 7-7-7" />
+          </svg>
         </a>
+      </div>
+    </section>
 
-        <!-- Projet 2 -->
-        <a href="#contact" class="block group" data-aos="fade-up" data-aos-delay="150" style="margin-top: 5%;">
-          <div
-            class="project-card mb-6 relative overflow-hidden aspect-video border-none shadow-[0_0_0_1px_rgba(255,255,255,0.08)]">
-            <img src="fikeno.png" alt="Fikeno Voyage" loading="lazy"
-              class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div class="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-500"></div>
-            <div class="absolute top-4 left-4">
-              <span
-                class="text-[10px] tracking-widest uppercase bg-black/60 text-white px-3 py-1 rounded-full backdrop-blur-md border border-white/10">Plugin
-                WP</span>
-            </div>
+    <!-- !fiab : section des realisations et produits concus -->
+    <section id="projets" class="py-24 md:py-36 px-6">
+      <div class="max-w-7xl mx-auto">
+
+        <div class="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-3" data-aos="fade-right">01 / Portfolio</p>
+            <h2 class="text-3xl md:text-5xl font-light tracking-tight text-var leading-tight" data-aos="fade-right" data-aos-delay="100">
+              Réalisations <span class="font-semibold">& Solutions</span>
+            </h2>
           </div>
-          <div class="flex items-start justify-between gap-4">
+          <p class="text-muted-var font-light max-w-md text-sm leading-relaxed" data-aos="fade-left" data-aos-delay="200">
+            Des outils conçus pour répondre à des besoins concrets sur le terrain, combinant architecture logicielle, impact citoyen et automatisation.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+
+          <!-- !fiab : projet urgencebj -->
+          <div class="project-card p-6 md:p-8 flex flex-col justify-between" data-aos="fade-up">
             <div>
-              <h3 class="text-2xl font-light text-var mb-2 group-hover:gold-highlight transition-colors">Fikeno Voyage
-              </h3>
-              <p class="text-sm text-muted-var font-light leading-relaxed">Plugin WordPress sur-mesure pour les agences
-                de voyages : gestion des départs, réservations, admin et emails.</p>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] tracking-widest uppercase bg-var text-muted-var px-3 py-1 rounded-full border border-var">
+                  Utilité Publique • Bénin
+                </span>
+                <span class="text-xs text-muted-var font-light">Avril 2026 à Août 2026</span>
+              </div>
+              <h3 class="text-2xl font-light text-var mb-3">UrgenceBJ</h3>
+              <p class="text-sm text-muted-var font-light leading-relaxed mb-6">
+                Plateforme citoyenne gratuite et sans inscription centralisant 86 numéros d'urgence au Bénin (santé, sécurité, social) et 79 axes routiers de patrouilles. Conçue pour permettre à chaque citoyen de joindre les secours en moins de 30 secondes en cas de danger.
+              </p>
             </div>
-            <div
-              class="shrink-0 w-10 h-10 rounded-full border border-var flex items-center justify-center text-var group-hover:bg-var group-hover:border-var transition-all">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
+            <div class="pt-4 border-t border-var flex items-center justify-between">
+              <span class="text-xs text-muted-var font-light">Accès libre et immédiat</span>
+              <a href="https://urgence-bj.fiab.website/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-var hover:text-primaire transition-colors">
+                <span>Consulter la plateforme</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17l9.2-9.2M17 17V7H7" />
+                </svg>
+              </a>
             </div>
           </div>
-        </a>
 
+          <!-- !fiab : projet edu fiab -->
+          <div class="project-card p-6 md:p-8 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] tracking-widest uppercase bg-var text-muted-var px-3 py-1 rounded-full border border-var">
+                  Laravel / PHP • SaaS Scolaire
+                </span>
+                <span class="text-xs text-muted-var font-light">Mai 2026 à Sept 2026</span>
+              </div>
+              <h3 class="text-2xl font-light text-var mb-3">Edu-Fiab</h3>
+              <p class="text-sm text-muted-var font-light leading-relaxed mb-6">
+                Système complet de gestion d'école développé comme projet de soutenance (Major de promotion IMA 2025). Il offre une interface intuitive aux directeurs et enseignants et permet aux parents de suivre en direct les résultats scolaires et l'évolution de leurs enfants.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-var flex items-center justify-between">
+              <span class="text-xs text-muted-var font-light">Disponible sur edu.fiab.website</span>
+              <a href="/contact/" class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-var hover:text-primaire transition-colors">
+                <span>Tester la démo</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- !fiab : projet outil de livraison fiab gestion -->
+          <div class="project-card p-6 md:p-8 flex flex-col justify-between" data-aos="fade-up">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] tracking-widest uppercase bg-var text-muted-var px-3 py-1 rounded-full border border-var">
+                  SaaS Logistique • En cours
+                </span>
+                <span class="text-xs text-primaire font-light">En développement</span>
+              </div>
+              <h3 class="text-2xl font-light text-var mb-3">Outil de Gestion de Livraisons</h3>
+              <p class="text-sm text-muted-var font-light leading-relaxed mb-6">
+                Plateforme SaaS pensée pour les entreprises et commerces opérant des livraisons : gestion centralisée des commandes, affectation des livreurs, suivi des tournées et reporting en temps réel.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-var flex items-center justify-between">
+              <span class="text-xs text-muted-var font-light">livraison.website</span>
+              <a href="https://livraison.website" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-var hover:text-primaire transition-colors">
+                <span>Voir le projet</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M7 17l9.2-9.2M17 17V7H7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- !fiab : automatisations n8n -->
+          <div class="project-card p-6 md:p-8 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-[10px] tracking-widest uppercase bg-var text-muted-var px-3 py-1 rounded-full border border-var">
+                  Automatisation n8n • IA & Process
+                </span>
+                <span class="text-xs text-muted-var font-light">Depuis 2025</span>
+              </div>
+              <h3 class="text-2xl font-light text-var mb-3">Automatisations n8n en Production</h3>
+              <p class="text-sm text-muted-var font-light leading-relaxed mb-6">
+                Déploiement de scénarios d'automatisation complexes : assistance clientèle 24/7 sur WhatsApp, synchronisation de Google Sheets avec bases de données distantes, et optimisation de processus métiers internes avec ou sans agents IA.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-var flex items-center justify-between">
+              <span class="text-xs text-muted-var font-light">Productivité & Rentabilité</span>
+              <a href="/services/" class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-var hover:text-primaire transition-colors">
+                <span>Découvrir les cas d'usage</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ═══════════════ BIO / EXPERTISE ═══════════════ -->
-  <section id="apropos" class="py-32 md:py-48 px-6 bg-subtle-var border-y border-var">
-    <div class="max-w-5xl mx-auto">
-      <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-8 text-center" data-aos="fade-up">02 / Expertise
-      </p>
+    <!-- !fiab : section chantiers en cours et engagements benevoles -->
+    <section id="engagements" class="py-24 md:py-36 px-6 bg-subtle-var border-y border-var">
+      <div class="max-w-7xl mx-auto">
 
-      <h2
-        class="text-3xl md:text-5xl lg:text-6xl font-light text-var leading-snug md:leading-tight text-center max-w-4xl mx-auto mb-20"
-        data-aos="fade-up" data-aos-delay="100">
-        Un profil hybride combinant la logique du <span class="font-semibold">développement web</span> et la rigueur du
-        <span class="font-semibold">Droit privé</span>.
-      </h2>
-
-      <div class="grid md:grid-cols-3 gap-12 text-center md:text-left border-t border-var pt-16">
-
-        <div data-aos="fade-up" data-aos-delay="200">
-          <h4 class="text-sm uppercase tracking-widest text-var mb-4">Ingénierie Web</h4>
-          <p class="text-muted-var font-light leading-relaxed text-sm">
-            Développement d'applications modernes, d'environnements SaaS et intégration WordPress robuste. Institut de
-            Multimédia Appliqué de Parakou.
-          </p>
-        </div>
-
-        <div data-aos="fade-up" data-aos-delay="300">
-          <h4 class="text-sm uppercase tracking-widest text-var mb-4">Automatisation N8N</h4>
-          <p class="text-muted-var font-light leading-relaxed text-sm">
-            Création de flux de travail intelligents et automatisation des processus via des solutions no-code /
-            bas-niveau.
-          </p>
-        </div>
-
-        <div data-aos="fade-up" data-aos-delay="400">
-          <h4 class="text-sm uppercase tracking-widest text-var mb-4">Juriste Digital</h4>
-          <p class="text-muted-var font-light leading-relaxed text-sm">
-            Licencié en Droit Privé à Parakou. Une compréhension fine des enjeux contractuels et numériques dans chaque
-            projet.
-          </p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════ CONTACT (ULTRA CLEAN FORM) ═══════════════ -->
-  <section id="contact" class="py-32 md:py-48 px-6">
-    <div class="max-w-5xl mx-auto">
-
-      <div class="grid md:grid-cols-2 gap-20">
-
-        <!-- Infos -->
-        <div>
-          <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-4" data-aos="fade-right">03 / Démarrer</p>
-          <h2 class="text-5xl md:text-7xl font-light tracking-tight text-var leading-none mb-10" data-aos="fade-right"
-            data-aos-delay="100">
-            Discutons<br /><span class="font-semibold">Idées.</span>
+        <div class="mb-16 md:mb-20 text-center max-w-3xl mx-auto">
+          <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-3" data-aos="fade-up">02 / En cours & Projets Sociaux</p>
+          <h2 class="text-3xl md:text-5xl font-light tracking-tight text-var leading-tight mb-4" data-aos="fade-up" data-aos-delay="100">
+            Chantiers Actifs & <span class="font-semibold">Bénévolat</span>
           </h2>
-
-          <div class="space-y-6" data-aos="fade-right" data-aos-delay="200">
-            <div>
-              <p class="text-xs uppercase tracking-widest text-muted-var mb-1">Email</p>
-              <a href="mailto:contact@fiab.website"
-                class="text-xl md:text-2xl text-var hover:text-muted-var transition-colors font-light">contact@fiab.website</a>
-            </div>
-            <div>
-              <p class="text-xs uppercase tracking-widest text-muted-var mb-1">WhatsApp</p>
-              <a href="https://wa.me/+2290155737210" target="_blank" rel="noopener noreferrer"
-                class="text-xl md:text-2xl text-var hover:text-muted-var transition-colors font-light">+229 01 55 73 72
-                10</a>
-            </div>
-          </div>
-
-          <div class="flex gap-6 mt-16" data-aos="fade-right" data-aos-delay="300">
-            <a href="https://www.linkedin.com/in/fiab-entreprise" target="_blank" rel="noopener noreferrer"
-              class="text-sm tracking-widest uppercase text-muted-var hover:text-var transition-colors">LinkedIn</a>
-            <a href="https://web.facebook.com/FassinouIves" target="_blank" rel="noopener noreferrer"
-              class="text-sm tracking-widest uppercase text-muted-var hover:text-var transition-colors">Facebook</a>
-          </div>
+          <p class="text-sm text-muted-var font-light leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+            Mettre mes compétences techniques au service de causes citoyennes est une priorité. Voici les projets sur lesquels je travaille activement.
+          </p>
         </div>
 
-        <!-- Form minimaliste -->
-        <div data-aos="fade-left" data-aos-delay="200" class="flex flex-col justify-center">
-          <form onsubmit="event.preventDefault(); handleSend();" class="space-y-10">
+        <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
 
-            <div class="relative">
-              <input type="text" id="contactName" placeholder="Comment vous appelle-t-on ?"
-                class="input-minimal w-full py-4 text-lg font-light" required />
+          <!-- !fiab : projet jobs benin -->
+          <div class="project-card p-6 md:p-8" data-aos="fade-up">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[10px] tracking-widest uppercase px-3 py-1 rounded-full bg-var border border-var text-muted-var">
+                Django / Python • Bénévolat
+              </span>
+              <span class="text-xs text-primaire font-light">Sept 2026 à aujourd'hui</span>
             </div>
+            <h3 class="text-xl md:text-2xl font-light text-var mb-3">Jobs Bénin</h3>
+            <p class="text-sm text-muted-var font-light leading-relaxed mb-4">
+              Plateforme sociale dont je conçois et développe l'intégralité de l'architecture en Django. Elle a pour vocation de publier et diffuser les offres d'emploi pour faciliter l'insertion professionnelle des jeunes et chercheurs d'emploi au Bénin.
+            </p>
+            <p class="text-xs text-muted-var font-light italic">
+              Conçu et développé bénévolement par Ives FASSINOU avec fierté civique.
+            </p>
+          </div>
 
-            <div class="relative">
-              <input type="email" id="contactEmail" placeholder="Où puis-je vous répondre ?"
-                class="input-minimal w-full py-4 text-lg font-light" required />
+          <!-- !fiab : projet citoyen de demain -->
+          <div class="project-card p-6 md:p-8" data-aos="fade-up" data-aos-delay="100">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[10px] tracking-widest uppercase px-3 py-1 rounded-full bg-var border border-var text-muted-var">
+                Éducation Civique • À venir
+              </span>
+              <span class="text-xs text-muted-var font-light">Projet futur</span>
             </div>
+            <h3 class="text-xl md:text-2xl font-light text-var mb-3">Citoyen de Demain</h3>
+            <p class="text-sm text-muted-var font-light leading-relaxed mb-4">
+              Initiative sociale développée par FASSINOU Christian. Je prendrai en charge la conception technique de cette plateforme destinée à enseigner aux enfants leurs droits et devoirs fondamentaux dans une approche interactive et pédagogique.
+            </p>
+            <p class="text-xs text-muted-var font-light italic">
+              Engagement pour l'instruction et la citoyenneté dès le plus jeune âge.
+            </p>
+          </div>
 
-            <div class="relative">
-              <textarea id="contactMsg" placeholder="Parlez-moi de votre projet..." rows="3"
-                class="input-minimal w-full py-4 text-lg font-light resize-none" required></textarea>
-            </div>
-
-            <button id="sendBtn" type="submit"
-              class="btn-primary px-10 py-5 w-full text-sm uppercase tracking-widest mt-4">
-              Envoyer le message →
-            </button>
-          </form>
         </div>
 
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- !fiab : section parcours et profil hybride -->
+    <section id="parcours" class="py-24 md:py-36 px-6">
+      <div class="max-w-5xl mx-auto">
+        <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-6 text-center" data-aos="fade-up">03 / Profil Hybride</p>
+
+        <h2 class="text-2xl md:text-4xl lg:text-5xl font-light text-var leading-snug text-center max-w-4xl mx-auto mb-16" data-aos="fade-up" data-aos-delay="100">
+          L'alliance rare du <span class="font-semibold">développement web</span>, de l'<span class="font-semibold">automatisation</span> et du <span class="font-semibold">Droit privé</span>.
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-8 border-t border-var pt-12">
+
+          <div data-aos="fade-up" data-aos-delay="200" class="p-4">
+            <h4 class="text-xs uppercase tracking-widest text-var mb-3 font-semibold">Ingénierie Web</h4>
+            <p class="text-muted-var font-light leading-relaxed text-sm">
+              Major de promotion Octobre 2025 à l'Institut de Multimédia Appliqué de Parakou. Conception d'architectures complètes en Laravel (PHP) et Django (Python), applications SaaS et intégration robuste.
+            </p>
+          </div>
+
+          <div data-aos="fade-up" data-aos-delay="300" class="p-4">
+            <h4 class="text-xs uppercase tracking-widest text-var mb-3 font-semibold">Automatisation n8n</h4>
+            <p class="text-muted-var font-light leading-relaxed text-sm">
+              Construction de flux de données continus, intégration de bots WhatsApp, synchronisation d'API et optimisation de processus métiers pour éliminer les tâches chronophages.
+            </p>
+          </div>
+
+          <div data-aos="fade-up" data-aos-delay="400" class="p-4">
+            <h4 class="text-xs uppercase tracking-widest text-var mb-3 font-semibold">Juriste (Droit Privé)</h4>
+            <p class="text-muted-var font-light leading-relaxed text-sm">
+              Licencié en Droit Privé à l'Université de Parakou en 2025 et inscription en Master de Droit en 2026. Une garantie de conformité, de rigueur contractuelle et de respect des données.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="mt-16 text-center" data-aos="fade-up" data-aos-delay="500">
+          <a href="/services/" class="btn-primary px-8 py-3.5 text-xs uppercase tracking-widest">
+            Consulter les détails de mes services
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- !fiab : section d appel a l action rapide -->
+    <section class="py-20 px-6 bg-subtle-var border-t border-var text-center">
+      <div class="max-w-3xl mx-auto">
+        <h3 class="text-3xl md:text-4xl font-light text-var mb-4" data-aos="fade-up">
+          Vous avez un projet en tête ou une opportunité ?
+        </h3>
+        <p class="text-sm text-muted-var font-light mb-8 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+          Que ce soit pour un recrutement, une mission de développement Laravel/Django, un projet d'automatisation n8n ou un conseil technique.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
+          <a href="/contact/" class="btn-primary px-8 py-3.5 text-xs uppercase tracking-widest w-full sm:w-auto">
+            Accéder à la page de contact
+          </a>
+          <a href="https://wa.me/+2290155737210" target="_blank" rel="noopener noreferrer" class="btn-outline px-8 py-3.5 text-xs uppercase tracking-widest w-full sm:w-auto">
+            Échanger sur WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <!-- !fiab : pied de page -->
   <footer class="py-10 px-6 border-t border-var text-center">
-    <p class="text-[10px] md:text-xs tracking-[0.2em] font-light text-muted-var uppercase">
-      Ives Fassinou — Tous droits réservés.
-    </p>
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-[10px] md:text-xs tracking-[0.2em] font-light text-muted-var uppercase">
+        FIAB Web Identity • Ives Fassinou • Tous droits réservés
+      </p>
+      <div class="flex items-center gap-6 text-[10px] uppercase tracking-widest text-muted-var">
+        <a href="/services/" class="hover:text-var transition-colors">Services</a>
+        <a href="/contact/" class="hover:text-var transition-colors">Contact</a>
+        <a href="https://www.linkedin.com/in/fiab-entreprise" target="_blank" rel="noopener noreferrer" class="hover:text-var transition-colors">LinkedIn</a>
+        <a href="https://web.facebook.com/FassinouIves" target="_blank" rel="noopener noreferrer" class="hover:text-var transition-colors">Facebook</a>
+      </div>
+    </div>
   </footer>
 
-  <!-- ═══════════════ SCRIPTS ═══════════════ -->
+  <!-- !fiab : scripts de gestion d affichage -->
   <script>
-    // Initialisation douce de AOS
+    // !fiab : initialisation de la bibliotheque aos
     AOS.init({ once: true, easing: 'ease-out-cubic', duration: 1000, offset: 50, disable: 'mobile' });
 
-    // Typwriter très net
-    const roles = ['Développeur Web', 'Juriste Digital', 'Automatiseur N8N', 'Vibe Coder'];
+    // !fiab : animation d ecriture rotative sobre avec les vrais metiers
+    const roles = [
+      'Développeur web',
+      "Développeur d'automatisation",
+      'Juriste'
+    ];
     let ri = 0, ci = 0, deleting = false;
     const tw = document.getElementById('roleText');
 
@@ -340,11 +493,11 @@
         tw.textContent = current.slice(0, --ci);
         if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
       }
-      setTimeout(typeLoop, deleting ? 30 : 80);
+      setTimeout(typeLoop, deleting ? 25 : 70);
     }
-    setTimeout(typeLoop, 1500);
+    setTimeout(typeLoop, 1200);
 
-    // Toggle du thème avec les bonnes icônes
+    // !fiab : gestion du theme clair et sombre
     function toggleTheme() {
       const html = document.documentElement;
       const icon = document.getElementById('themeIcon');
@@ -362,39 +515,14 @@
       }
     }
 
-    // Initialiser la bonne icône au load
+    // !fiab : synchronisation initiale de l icone au chargement
     (function () {
       const SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
       if (localStorage.getItem('theme') === 'light') {
-        document.getElementById('themeIcon').innerHTML = SUN;
+        const icon = document.getElementById('themeIcon');
+        if (icon) icon.innerHTML = SUN;
       }
     })();
-
-    // Envoyer
-    function handleSend() {
-      const nom = document.getElementById('contactName').value;
-      const email = document.getElementById('contactEmail').value;
-      const msg = document.getElementById('contactMsg').value;
-      const btn = document.getElementById('sendBtn');
-
-      // Format the message for WhatsApp URL
-      const texte = `Bonjour Ives, je suis ${nom} (${email}).%0A%0AVoici mon message :%0A${msg}`;
-
-      // Redirect to wa.me with the message
-      window.open(`https://wa.me/+2290155737210?text=${texte}`, '_blank');
-
-      btn.textContent = 'Ouverture de WhatsApp...';
-      btn.style.background = 'var(--text)';
-      btn.style.color = 'var(--bg)';
-
-      setTimeout(() => {
-        btn.textContent = 'Envoyer le message →';
-        // Reset styles if needed, or clear form
-        document.getElementById('contactName').value = '';
-        document.getElementById('contactEmail').value = '';
-        document.getElementById('contactMsg').value = '';
-      }, 4000);
-    }
   </script>
 
 </body>

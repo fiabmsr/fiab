@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth" id="html-root">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- !fiab : metadonnees de securite -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <title>Contact | Ives FASSINOU • FIAB Web Identity</title>
+  <meta name="description" content="Prenez contact avec Ives FASSINOU (FIAB Web Identity) pour un recrutement, un développement d'application web Laravel/Django, une automatisation n8n ou un conseil juridique." />
+  <meta name="author" content="Ives Fassinou" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://fiab.website/contact/" />
+  
+  <link rel="icon" type="image/png" href="../favicon.png" />
+
+  <!-- !fiab : metadonnees opengraph pour partages -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fiab.website/contact/" />
+  <meta property="og:title" content="Contactez Ives FASSINOU • FIAB Web Identity" />
+  <meta property="og:description" content="Échangeons sur vos projets web, d'automatisation n8n ou opportunités de recrutement." />
+  <meta property="og:image" content="https://fiab.website/fiab-ives-fassinou.png" />
+  <meta property="og:locale" content="fr_FR" />
+
+  <!-- !fiab : twitter cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contact | Ives FASSINOU • FIAB Web Identity" />
+  <meta name="twitter:description" content="Prenez contact directement pour vos projets web et d'automatisation." />
+  <meta name="twitter:image" content="https://fiab.website/fiab-ives-fassinou.png" />
+
+  <!-- !fiab : donnees structurees schema org contact -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Page de Contact - FIAB Web Identity",
+    "url": "https://fiab.website/contact/",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "Ives Fassinou",
+      "telephone": "+2290155737210",
+      "email": "contact@fiab.website",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Parakou",
+        "addressCountry": "BJ"
+      }
+    }
+  }
+  </script>
+
+  <!-- !fiab : chargement de tailwind css -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primaire: 'var(--couleur-primaire)',
+          },
+          fontFamily: {
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- !fiab : feuille de style du projet -->
+  <link rel="stylesheet" href="../style.css" />
+
+  <!-- !fiab : bibliotheque aos -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+  <!-- !fiab : police montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script>
+    // !fiab : initialisation du theme
+    (function () {
+      if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light');
+    })();
+  </script>
+</head>
+
+<body class="antialiased selection:bg-primaire selection:text-white">
+
+  <!-- !fiab : navigation sous page -->
+  <nav class="nav-backdrop fixed top-0 left-0 right-0 z-50 px-6 py-5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+      <a href="/" class="flex items-center gap-2">
+        <span class="text-xl font-bold tracking-tighter text-var">FIAB.</span>
+        <span class="text-[10px] tracking-widest uppercase px-2 py-0.5 rounded border border-var text-muted-var">Web Identity</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8 text-sm font-light tracking-wide text-muted-var">
+        <a href="/" class="nav-link text-var transition-colors">Accueil</a>
+        <a href="/#projets" class="nav-link text-var transition-colors">Réalisations</a>
+        <a href="/services/" class="nav-link text-var transition-colors">Services</a>
+        <a href="/#parcours" class="nav-link text-var transition-colors">Parcours</a>
+        <a href="/contact/" class="nav-link text-var font-semibold transition-colors">Contact</a>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- !fiab : bascule du theme -->
+        <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Changer le thème">
+          <span id="themeIcon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </span>
+        </button>
+        <a href="https://wa.me/+2290155737210" target="_blank" rel="noopener noreferrer" class="hidden md:inline-flex btn-primary px-6 py-2.5 text-xs uppercase tracking-widest">
+          WhatsApp Direct
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-24 px-6">
+    <div class="max-w-6xl mx-auto">
+
+      <div class="mb-16 text-center max-w-3xl mx-auto">
+        <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-3" data-aos="fade-up">Prendre Contact</p>
+        <h1 class="text-4xl md:text-6xl font-light tracking-tight text-var leading-tight mb-4" data-aos="fade-up" data-aos-delay="100">
+          Parlons de votre <span class="font-semibold">Projet ou Opportunité</span>
+        </h1>
+        <p class="text-sm md:text-base text-muted-var font-light leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+          Disponible pour des recrutements à fort impact, des missions de développement web en Laravel ou Django, des automatisations de processus n8n et du conseil juridique.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-16 items-start">
+
+        <!-- !fiab : coordonnees directes -->
+        <div class="space-y-10" data-aos="fade-right">
+
+          <div>
+            <h2 class="text-2xl font-light text-var mb-4">Canaux Directs</h2>
+            <p class="text-sm text-muted-var font-light leading-relaxed mb-8">
+              Vous pouvez m'écrire par email ou échanger directement par WhatsApp pour une discussion rapide et informelle.
+            </p>
+          </div>
+
+          <div class="space-y-6">
+
+            <div class="p-6 border border-var rounded-2xl bg-subtle-var flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full border border-var flex items-center justify-center shrink-0 text-var">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-[10px] uppercase tracking-widest text-muted-var mb-1">Email Professionnel</p>
+                <a href="mailto:contact@fiab.website" class="text-lg text-var hover:text-primaire transition-colors font-light">
+                  contact@fiab.website
+                </a>
+              </div>
+            </div>
+
+            <div class="p-6 border border-var rounded-2xl bg-subtle-var flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full border border-var flex items-center justify-center shrink-0 text-var">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-[10px] uppercase tracking-widest text-muted-var mb-1">Téléphone & WhatsApp</p>
+                <a href="https://wa.me/+2290155737210" target="_blank" rel="noopener noreferrer" class="text-lg text-var hover:text-primaire transition-colors font-light">
+                  +229 01 55 73 72 10
+                </a>
+              </div>
+            </div>
+
+            <div class="p-6 border border-var rounded-2xl bg-subtle-var flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full border border-var flex items-center justify-center shrink-0 text-var">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-[10px] uppercase tracking-widest text-muted-var mb-1">Localisation</p>
+                <p class="text-base text-var font-light">
+                  Parakou, Bénin • Disponible en présentiel et à distance (Remote)
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="pt-6 border-t border-var flex gap-6">
+            <a href="https://www.linkedin.com/in/fiab-entreprise" target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-widest text-muted-var hover:text-var transition-colors">
+              Profil LinkedIn
+            </a>
+            <a href="https://web.facebook.com/FassinouIves" target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-widest text-muted-var hover:text-var transition-colors">
+              Page Facebook
+            </a>
+          </div>
+
+        </div>
+
+        <!-- !fiab : formulaire de contact et devis securise -->
+        <div class="p-8 md:p-10 border border-var rounded-3xl bg-subtle-var" data-aos="fade-left">
+          <h2 class="text-2xl font-light text-var mb-2">Envoyer un message</h2>
+          <p class="text-xs text-muted-var font-light mb-8">
+            Remplissez ce formulaire pour être redirigé directement vers WhatsApp avec un message clair et structuré.
+          </p>
+
+          <form id="contactForm" onsubmit="event.preventDefault(); submitForm();" class="space-y-6">
+
+            <div>
+              <label for="contactSubject" class="block text-[10px] uppercase tracking-widest text-muted-var mb-2">Objet de la demande</label>
+              <select id="contactSubject" class="input-minimal w-full py-3 text-sm font-light bg-transparent">
+                <option value="Opportunité de recrutement" class="bg-black text-white">Opportunité de recrutement</option>
+                <option value="Projet de Développement Web" class="bg-black text-white">Projet de Développement Web (Laravel / Django)</option>
+                <option value="Automatisation de processus n8n" class="bg-black text-white">Automatisation de processus n8n</option>
+                <option value="Conseil Juridique & Droit Privé" class="bg-black text-white">Conseil Juridique & Droit Privé</option>
+                <option value="Autre demande" class="bg-black text-white">Autre demande</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="contactName" class="block text-[10px] uppercase tracking-widest text-muted-var mb-2">Votre nom ou entreprise</label>
+              <input type="text" id="contactName" placeholder="Ex: Jean Dupont / Entreprise XYZ" class="input-minimal w-full py-3 text-sm font-light" required maxlength="100" />
+            </div>
+
+            <div>
+              <label for="contactEmail" class="block text-[10px] uppercase tracking-widest text-muted-var mb-2">Votre adresse email</label>
+              <input type="email" id="contactEmail" placeholder="nom@domaine.com" class="input-minimal w-full py-3 text-sm font-light" required maxlength="120" />
+            </div>
+
+            <div>
+              <label for="contactMsg" class="block text-[10px] uppercase tracking-widest text-muted-var mb-2">Détails de votre besoin</label>
+              <textarea id="contactMsg" placeholder="Présentez brièvement vos attentes, délais ou questions..." rows="4" class="input-minimal w-full py-3 text-sm font-light resize-none" required maxlength="1500"></textarea>
+            </div>
+
+            <div class="pt-4">
+              <button id="sendBtn" type="submit" class="btn-primary w-full py-4 text-xs uppercase tracking-widest">
+                Transmettre via WhatsApp
+              </button>
+            </div>
+
+            <div class="text-center pt-2">
+              <span class="text-[10px] text-muted-var font-light">
+                Ou écrivez-moi directement à <a href="mailto:contact@fiab.website" class="underline hover:text-var">contact@fiab.website</a>
+              </span>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- !fiab : pied de page -->
+  <footer class="py-10 px-6 border-t border-var text-center">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-[10px] md:text-xs tracking-[0.2em] font-light text-muted-var uppercase">
+        FIAB Web Identity • Ives Fassinou • Tous droits réservés
+      </p>
+      <div class="flex items-center gap-6 text-[10px] uppercase tracking-widest text-muted-var">
+        <a href="/" class="hover:text-var transition-colors">Accueil</a>
+        <a href="/services/" class="hover:text-var transition-colors">Services</a>
+        <a href="https://www.linkedin.com/in/fiab-entreprise" target="_blank" rel="noopener noreferrer" class="hover:text-var transition-colors">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // !fiab : initialisation aos
+    AOS.init({ once: true, easing: 'ease-out-cubic', duration: 1000, offset: 50, disable: 'mobile' });
+
+    // !fiab : assainissement des entrees pour securite xss
+    function sanitize(text) {
+      const temp = document.createElement('div');
+      temp.textContent = text;
+      return temp.innerHTML;
+    }
+
+    // !fiab : soumission securisee du formulaire
+    function submitForm() {
+      const subject = document.getElementById('contactSubject').value.trim();
+      const rawName = document.getElementById('contactName').value.trim();
+      const rawEmail = document.getElementById('contactEmail').value.trim();
+      const rawMsg = document.getElementById('contactMsg').value.trim();
+
+      const name = sanitize(rawName);
+      const email = sanitize(rawEmail);
+      const msg = sanitize(rawMsg);
+
+      if (!name || !email || !msg) {
+        return;
+      }
+
+      const formatted = `Bonjour Ives,%0A%0AJe vous contacte concernant : ${encodeURIComponent(subject)}%0ANom : ${encodeURIComponent(name)}%0AEmail : ${encodeURIComponent(email)}%0A%0AMessage :%0A${encodeURIComponent(msg)}`;
+
+      window.open(`https://wa.me/+2290155737210?text=${formatted}`, '_blank');
+
+      const btn = document.getElementById('sendBtn');
+      btn.textContent = 'Redirection WhatsApp...';
+      setTimeout(() => {
+        btn.textContent = 'Transmettre via WhatsApp';
+        document.getElementById('contactForm').reset();
+      }, 4000);
+    }
+
+    // !fiab : toggle du theme
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      const MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      const SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+
+      if (html.classList.contains('light')) {
+        html.classList.remove('light');
+        icon.innerHTML = MOON;
+        localStorage.setItem('theme', 'dark');
+      } else {
+        html.classList.add('light');
+        icon.innerHTML = SUN;
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    (function () {
+      const SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+      if (localStorage.getItem('theme') === 'light') {
+        const icon = document.getElementById('themeIcon');
+        if (icon) icon.innerHTML = SUN;
+      }
+    })();
+  </script>
+
+</body>
+
+</html>

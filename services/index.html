@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth" id="html-root">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- !fiab : metadonnees de securite -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <title>Services | Ives FASSINOU • FIAB Web Identity</title>
+  <meta name="description" content="Découvrez les services professionnels d'Ives FASSINOU (FIAB Web Identity) : ingénierie web en Laravel et Django, automatisation de processus métiers n8n et conseil juridique au Bénin." />
+  <meta name="author" content="Ives Fassinou" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://fiab.website/services/" />
+  
+  <link rel="icon" type="image/png" href="../favicon.png" />
+
+  <!-- !fiab : metadonnees opengraph pour partages -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fiab.website/services/" />
+  <meta property="og:title" content="Services professionnels | Ives FASSINOU • FIAB Web Identity" />
+  <meta property="og:description" content="Ingénierie web Laravel et Django, automatisation de processus métiers n8n et conseil juridique." />
+  <meta property="og:image" content="https://fiab.website/fiab-ives-fassinou.png" />
+  <meta property="og:locale" content="fr_FR" />
+
+  <!-- !fiab : twitter cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Services professionnels | Ives FASSINOU" />
+  <meta name="twitter:description" content="Développement web, automatisation n8n et rigueur juridique pour vos projets." />
+  <meta name="twitter:image" content="https://fiab.website/fiab-ives-fassinou.png" />
+
+  <!-- !fiab : donnees structurees schema org pour ia et moteurs -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "FIAB Web Identity - Services",
+    "url": "https://fiab.website/services/",
+    "provider": {
+      "@type": "Person",
+      "name": "Ives Fassinou",
+      "jobTitle": "Développeur Web & Automaticien n8n"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Services Numériques FIAB",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Ingénierie & Développement Web (Laravel / Django)",
+            "description": "Conception d'applications web robustes, plateformes SaaS, portails métiers et APIs sécurisées."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Automatisation de Processus Métiers n8n",
+            "description": "Automatisation de workflows, bots WhatsApp service client, synchronisation Google Sheets et BDD."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Expertise Juridique & Droit Privé",
+            "description": "Cadrage contractuel des projets digitaux, conformité des données et rigueur du droit privé."
+          }
+        }
+      ]
+    }
+  }
+  </script>
+
+  <!-- !fiab : chargement de tailwind css -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primaire: 'var(--couleur-primaire)',
+          },
+          fontFamily: {
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- !fiab : feuille de style du projet -->
+  <link rel="stylesheet" href="../style.css" />
+
+  <!-- !fiab : bibliotheque d animations aos -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+  <!-- !fiab : police montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script>
+    // !fiab : initialisation du theme avant rendu
+    (function () {
+      if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light');
+    })();
+  </script>
+</head>
+
+<body class="antialiased selection:bg-primaire selection:text-white">
+
+  <!-- !fiab : navigation pour sous page -->
+  <nav class="nav-backdrop fixed top-0 left-0 right-0 z-50 px-6 py-5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+      <a href="/" class="flex items-center gap-2">
+        <span class="text-xl font-bold tracking-tighter text-var">FIAB.</span>
+        <span class="text-[10px] tracking-widest uppercase px-2 py-0.5 rounded border border-var text-muted-var">Web Identity</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8 text-sm font-light tracking-wide text-muted-var">
+        <a href="/" class="nav-link text-var transition-colors">Accueil</a>
+        <a href="/#projets" class="nav-link text-var transition-colors">Réalisations</a>
+        <a href="/services/" class="nav-link text-var font-semibold transition-colors">Services</a>
+        <a href="/#parcours" class="nav-link text-var transition-colors">Parcours</a>
+        <a href="/contact/" class="nav-link text-var transition-colors">Contact</a>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- !fiab : bouton de bascule theme -->
+        <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Changer le thème">
+          <span id="themeIcon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </span>
+        </button>
+        <a href="/contact/" class="hidden md:inline-flex btn-primary px-6 py-2.5 text-xs uppercase tracking-widest">
+          Demander un devis
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-24 px-6">
+    <div class="max-w-7xl mx-auto">
+
+      <!-- !fiab : entete de la page services -->
+      <div class="mb-16 md:mb-24 text-center max-w-4xl mx-auto">
+        <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-4" data-aos="fade-up">Offres & Compétences</p>
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight text-var leading-tight mb-6" data-aos="fade-up" data-aos-delay="100">
+          Services d'Ingénierie, <span class="font-semibold">Automatisation & Droit</span>
+        </h1>
+        <p class="text-sm md:text-base text-muted-var font-light leading-relaxed max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+          Une approche complète et pragmatique pour concevoir vos logiciels, accélérer vos processus d'entreprise et sécuriser vos cadres numériques.
+        </p>
+      </div>
+
+      <!-- !fiab : grille des 3 piliers de prestations -->
+      <div class="grid md:grid-cols-3 gap-8 mb-24">
+
+        <!-- !fiab : service 1 developpement web -->
+        <div class="project-card p-8 flex flex-col justify-between" data-aos="fade-up">
+          <div>
+            <div class="w-12 h-12 rounded-full border border-var flex items-center justify-center text-var mb-6">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg>
+            </div>
+            <span class="text-[10px] uppercase tracking-widest text-muted-var block mb-2">Pilier 01</span>
+            <h2 class="text-2xl font-light text-var mb-4">Ingénierie Web Fullstack</h2>
+            <p class="text-sm text-muted-var font-light leading-relaxed mb-6">
+              Développement d'applications web sur-mesure fondées sur des technologies pérennes et reconnues : Laravel (PHP) et Django (Python).
+            </p>
+            <ul class="space-y-3 text-xs text-muted-var font-light mb-8">
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Applications SaaS et plateformes de gestion</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Architecture d'APIs REST sécurisées</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Portails scolaires, métiers et logistiques</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Conception de bases de données relationnelles optimisées</span>
+              </li>
+            </ul>
+          </div>
+          <div class="pt-6 border-t border-var">
+            <a href="/contact/" class="btn-outline px-6 py-2.5 text-[10px] uppercase tracking-widest w-full text-center block">
+              Parler d'un projet web
+            </a>
+          </div>
+        </div>
+
+        <!-- !fiab : service 2 automatisation n8n -->
+        <div class="project-card p-8 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
+          <div>
+            <div class="w-12 h-12 rounded-full border border-var flex items-center justify-center text-var mb-6">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+                <line x1="6" y1="6" x2="6.01" y2="6" />
+                <line x1="6" y1="18" x2="6.01" y2="18" />
+              </svg>
+            </div>
+            <span class="text-[10px] uppercase tracking-widest text-muted-var block mb-2">Pilier 02</span>
+            <h2 class="text-2xl font-light text-var mb-4">Automatisation n8n & Processus</h2>
+            <p class="text-sm text-muted-var font-light leading-relaxed mb-6">
+              Automatisation intégrale de vos flux de travail récurrents pour supprimer la saisie manuelle et fiabiliser vos opérations quotidiennes.
+            </p>
+            <ul class="space-y-3 text-xs text-muted-var font-light mb-8">
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Bots WhatsApp d'assistance clientèle 24/7</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Synchronisation Google Sheets et bases de données</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Connexions d'outils tiers par webhooks et APIs</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Intégration d'agents intelligents avec ou sans IA</span>
+              </li>
+            </ul>
+          </div>
+          <div class="pt-6 border-t border-var">
+            <a href="/contact/" class="btn-outline px-6 py-2.5 text-[10px] uppercase tracking-widest w-full text-center block">
+              Automatiser un flux
+            </a>
+          </div>
+        </div>
+
+        <!-- !fiab : service 3 juriste et droit prive -->
+        <div class="project-card p-8 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="200">
+          <div>
+            <div class="w-12 h-12 rounded-full border border-var flex items-center justify-center text-var mb-6">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <span class="text-[10px] uppercase tracking-widest text-muted-var block mb-2">Pilier 03</span>
+            <h2 class="text-2xl font-light text-var mb-4">Juriste & Droit Privé</h2>
+            <p class="text-sm text-muted-var font-light leading-relaxed mb-6">
+              Accompagnement rigoureux tirant parti de ma licence en Droit Privé et de mes études en cours en Master pour sécuriser vos actifs numériques.
+            </p>
+            <ul class="space-y-3 text-xs text-muted-var font-light mb-8">
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Audit de conformité des flux de données</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Cadrage contractuel de prestations logicielles</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Sensibilisation aux enjeux de propriété intellectuelle</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-var border border-var"></span>
+                <span>Conseil préventif sur les conditions d'utilisation</span>
+              </li>
+            </ul>
+          </div>
+          <div class="pt-6 border-t border-var">
+            <a href="/contact/" class="btn-outline px-6 py-2.5 text-[10px] uppercase tracking-widest w-full text-center block">
+              Consulter sur un besoin
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- !fiab : deroulement d une collaboration -->
+      <section class="py-16 border-t border-var">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <p class="text-xs uppercase tracking-[0.2em] text-muted-var mb-3">Méthodologie</p>
+          <h3 class="text-2xl md:text-4xl font-light text-var">Comment nous collaborons</h3>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-8">
+          <div class="p-6 border border-var rounded-2xl bg-subtle-var">
+            <span class="text-xs font-semibold text-primaire mb-2 block">Étape 01</span>
+            <h4 class="text-base text-var font-medium mb-2">Cadrage & Diagnostic</h4>
+            <p class="text-xs text-muted-var font-light leading-relaxed">
+              Échange approfondi pour cerner vos objectifs métiers, vos contraintes techniques et le périmètre exact.
+            </p>
+          </div>
+
+          <div class="p-6 border border-var rounded-2xl bg-subtle-var">
+            <span class="text-xs font-semibold text-primaire mb-2 block">Étape 02</span>
+            <h4 class="text-base text-var font-medium mb-2">Conception & Plan</h4>
+            <p class="text-xs text-muted-var font-light leading-relaxed">
+              Élaboration de l'architecture de la base de données, maquettage et choix d'implémentation documentés.
+            </p>
+          </div>
+
+          <div class="p-6 border border-var rounded-2xl bg-subtle-var">
+            <span class="text-xs font-semibold text-primaire mb-2 block">Étape 03</span>
+            <h4 class="text-base text-var font-medium mb-2">Développement & Tests</h4>
+            <p class="text-xs text-muted-var font-light leading-relaxed">
+              Programmation propre en Laravel/Django ou flux n8n, avec vérification continue de la sécurité et de la rapidité.
+            </p>
+          </div>
+
+          <div class="p-6 border border-var rounded-2xl bg-subtle-var">
+            <span class="text-xs font-semibold text-primaire mb-2 block">Étape 04</span>
+            <h4 class="text-base text-var font-medium mb-2">Mise en ligne & Suivi</h4>
+            <p class="text-xs text-muted-var font-light leading-relaxed">
+              Déploiement sur environnement de production, formation à l'utilisation et support technique attentif.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- !fiab : bandeau d action final -->
+      <div class="mt-20 p-12 rounded-3xl bg-subtle-var border border-var text-center">
+        <h3 class="text-3xl font-light text-var mb-4">Prêt à démarrer une mission ?</h3>
+        <p class="text-sm text-muted-var font-light mb-8 max-w-xl mx-auto">
+          Je réponds rapidement pour étudier votre besoin et vous proposer une solution technique adaptée.
+        </p>
+        <a href="/contact/" class="btn-primary px-8 py-3.5 text-xs uppercase tracking-widest inline-flex">
+          Prendre contact maintenant
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- !fiab : pied de page -->
+  <footer class="py-10 px-6 border-t border-var text-center">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-[10px] md:text-xs tracking-[0.2em] font-light text-muted-var uppercase">
+        FIAB Web Identity • Ives Fassinou • Tous droits réservés
+      </p>
+      <div class="flex items-center gap-6 text-[10px] uppercase tracking-widest text-muted-var">
+        <a href="/" class="hover:text-var transition-colors">Accueil</a>
+        <a href="/contact/" class="hover:text-var transition-colors">Contact</a>
+        <a href="https://www.linkedin.com/in/fiab-entreprise" target="_blank" rel="noopener noreferrer" class="hover:text-var transition-colors">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // !fiab : initialisation aos
+    AOS.init({ once: true, easing: 'ease-out-cubic', duration: 1000, offset: 50, disable: 'mobile' });
+
+    // !fiab : toggle du theme
+    function toggleTheme() {
+      const html = document.documentElement;
+      const icon = document.getElementById('themeIcon');
+      const MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      const SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+
+      if (html.classList.contains('light')) {
+        html.classList.remove('light');
+        icon.innerHTML = MOON;
+        localStorage.setItem('theme', 'dark');
+      } else {
+        html.classList.add('light');
+        icon.innerHTML = SUN;
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    (function () {
+      const SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+      if (localStorage.getItem('theme') === 'light') {
+        const icon = document.getElementById('themeIcon');
+        if (icon) icon.innerHTML = SUN;
+      }
+    })();
+  </script>
+
+</body>
+
+</html>
