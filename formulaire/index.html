@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="../favicon.png" />
+<title>Démo WhatsApp en direct</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=permanent-marker:400|poppins:400,600,800&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  /* Fiab: mes deux couleurs, l'encre vert très sombre et l'orange marqueur, comme dans le carnet de mes vidéos. Le vert WhatsApp reste une valeur libre parce que c'est la couleur du logo. */
+  tailwind.config = {
+    theme: { extend: {
+      colors: { couleurprimaire: "#11231d", couleursecondaire: "#e4401c" },
+      fontFamily: { poppins: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"], marqueur: ["Permanent Marker", "Marker Felt", "cursive"] }
+    } }
+  };
+</script>
+<style>
+  /* Layout: tout tient dans un seul écran, sans défilement. Titre, deux champs, un bouton. Aux étapes suivantes le titre disparaît pour laisser la place aux questions. */
+  /* Fiab: une seule ambiance claire assumée, la feuille de carnet de mes vidéos, donc fond et textes sont posés explicitement. */
+  :root { --papier: #f3ecd9; --encre: #11231d; --orange: #e4401c; color-scheme: light; }
+  body { background: var(--papier); color: var(--encre); margin: 0; font-family: "Poppins", ui-sans-serif, system-ui, sans-serif; }
+  .papier {
+    background-color: var(--papier);
+    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 35px, rgba(70,100,170,0.17) 35px, rgba(70,100,170,0.17) 37px);
+    position: relative;
+  }
+  .papier::before { content: ""; position: absolute; top: 0; bottom: 0; left: 14px; width: 2px; background: rgba(228,64,28,0.4); }
+  .ombre { box-shadow: 4px 4px 0 var(--encre); }
+  .champ:focus-within { box-shadow: 4px 4px 0 var(--orange); border-color: var(--encre); }
+  .bouton:active:not(:disabled), .choix:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--encre); }
+  .bouton:focus-visible, .choix:focus-visible, .lien:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .etape { animation: entree 0.3s ease-out both; }
+  @keyframes entree { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (max-height: 640px) { .titre { font-size: 1.95rem !important; } }
+  @media (prefers-reduced-motion: reduce) { .etape { animation: none; } .animate-spin { animation: none; } }
+</style>
+
+</head>
+<body class="selection:bg-couleursecondaire selection:text-white">
+<div class="papier flex min-h-[100dvh] flex-col px-6 pb-4 pt-6">
+  <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-5">
+
+    <!-- Fiab: l'accroche reprend la promesse de mes vidéos. Elle disparaît après l'envoi pour libérer l'écran. -->
+    <header id="accroche" class="flex flex-col gap-3">
+      <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-couleurprimaire/70">FIAB Web Identity</p>
+      <h1 class="titre font-marqueur text-[2.4rem] font-normal leading-[1.05] text-couleurprimaire">Ton commerce<br />sur ton<br /><span class="relative inline-block text-couleursecondaire">WhatsApp<svg class="absolute -bottom-2 left-0 h-3 w-full" viewBox="0 0 200 12" preserveAspectRatio="none" fill="none" stroke="#e4401c" stroke-width="4" stroke-linecap="butt" aria-hidden="true"><path d="M2 7 Q 50 1 100 6 T 198 5" /></svg></span></h1>
+      <p class="text-base font-semibold leading-snug text-couleurprimaire/80">Remplis le formulaire. On te contacte et on te montre le système en direct.</p>
+    </header>
+
+    <form id="etape_1" class="etape flex flex-col gap-4" novalidate onsubmit="event.preventDefault()">
+      <div class="flex flex-col gap-1.5">
+        <label for="prenom" class="text-sm font-extrabold">Ton prénom</label>
+        <div class="champ rounded-xl border-[3px] border-couleurprimaire bg-white ombre">
+          <input id="prenom" name="prenom" type="text" autocomplete="given-name" enterkeyhint="next" placeholder="Awa" class="h-14 w-full rounded-xl bg-transparent px-4 text-lg font-semibold text-couleurprimaire outline-none placeholder:font-normal placeholder:text-couleurprimaire/40" aria-describedby="erreur_prenom">
+        </div>
+        <p id="erreur_prenom" class="text-sm font-extrabold text-couleursecondaire" role="alert" aria-live="polite"></p>
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label for="numero" class="text-sm font-extrabold">Ton numéro WhatsApp</label>
+        <div class="champ flex rounded-xl border-[3px] border-couleurprimaire bg-white ombre">
+          <select id="indicatif" name="indicatif" aria-label="Indicatif du pays" class="h-14 w-[6.6rem] shrink-0 rounded-l-xl border-r-[3px] border-couleurprimaire bg-[#efe6cf] px-3 text-base font-extrabold text-couleurprimaire outline-none">
+            <option value="229" selected>BJ +229</option>
+            <option value="228">TG +228</option>
+            <option value="225">CI +225</option>
+            <option value="221">SN +221</option>
+            <option value="226">BF +226</option>
+            <option value="227">NE +227</option>
+            <option value="223">ML +223</option>
+            <option value="237">CM +237</option>
+            <option value="234">NG +234</option>
+          </select>
+          <input id="numero" name="numero" type="tel" inputmode="numeric" autocomplete="tel-national" enterkeyhint="go" placeholder="01 XX XX XX XX" class="h-14 min-w-0 flex-1 rounded-r-xl bg-transparent px-4 text-lg font-semibold tracking-wide text-couleurprimaire outline-none placeholder:font-normal placeholder:text-couleurprimaire/40" aria-describedby="erreur_numero">
+        </div>
+        <p id="erreur_numero" class="text-sm font-extrabold text-couleursecondaire" role="alert" aria-live="polite"></p>
+      </div>
+
+      <!-- Fiab: piège à robots. Un humain ne voit jamais ce champ. Il ne bloque plus rien dans la page, sa valeur part dans le champ piege du webhook et n8n ignore les prospects où il est rempli. Avant, un remplissage automatique du navigateur pouvait bloquer l'envoi sans message. -->
+      <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true"><input id="piege_robot" name="champ_x7q" type="text" tabindex="-1" autocomplete="off" data-lpignore="true" data-1p-ignore="true"></div>
+
+      <p id="erreur_envoi" class="hidden rounded-xl border-[3px] border-couleursecondaire bg-white px-4 py-3 text-sm font-extrabold text-couleursecondaire" role="alert">L'envoi n'a pas marché. Vérifie ta connexion et réessaie.</p>
+      <button id="bouton_envoyer" type="submit" class="bouton ombre flex h-14 w-full items-center justify-center gap-3 rounded-xl border-[3px] border-couleurprimaire bg-couleursecondaire text-lg font-extrabold text-white transition-transform">
+        <span id="texte_bouton">Je veux voir la démo</span>
+        <svg id="icone_attente" class="hidden h-6 w-6 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9" /></svg>
+      </button>
+      <p class="text-center text-sm font-semibold text-couleurprimaire/70">On te répond sur WhatsApp, rien d'autre.</p>
+    </form>
+
+    <!-- Fiab: étape 2, une question à la fois avec de gros boutons. Le prospect est déjà enregistré, il peut tout passer sans rien perdre. -->
+    <section id="etape_2" class="etape flex flex-col gap-5" hidden>
+      <div class="flex items-center justify-between gap-4">
+        <button id="retour" type="button" class="lien shrink-0 text-sm font-extrabold text-couleurprimaire/70 underline underline-offset-4">&larr; Retour</button>
+        <div class="flex flex-1 gap-2" aria-hidden="true"><span class="trait h-2 flex-1 rounded-sm bg-couleurprimaire"></span><span class="trait h-2 flex-1 rounded-sm bg-couleurprimaire/20"></span><span class="trait h-2 flex-1 rounded-sm bg-couleurprimaire/20"></span><span class="trait h-2 flex-1 rounded-sm bg-couleurprimaire/20"></span></div>
+        <button id="passer" type="button" class="lien shrink-0 text-sm font-extrabold text-couleurprimaire/70 underline underline-offset-4">Passer</button>
+      </div>
+      <div>
+        <p id="salut" class="text-base font-extrabold text-couleursecondaire"></p>
+        <h2 id="question" class="font-marqueur text-[1.8rem] font-normal leading-tight text-couleurprimaire" aria-live="polite"></h2>
+      </div>
+      <div id="choix" class="flex flex-col gap-3"></div>
+      <!-- Fiab: sous Ce soir et Demain, un champ date. On peut taper jj/mm/aaaa ou cliquer pour ouvrir un calendrier à mes couleurs. Les jours passés sont grisés et impossibles à choisir. -->
+      <div id="zone_date" class="relative flex flex-col gap-2" hidden>
+        <label for="date_texte" class="text-sm font-extrabold">Ou choisis un autre jour</label>
+        <div class="champ flex items-center rounded-xl border-[3px] border-couleurprimaire bg-white ombre">
+          <input id="date_texte" type="text" inputmode="numeric" autocomplete="off" placeholder="jj/mm/aaaa" maxlength="10" class="h-14 min-w-0 flex-1 rounded-xl bg-transparent px-4 text-lg font-semibold text-couleurprimaire outline-none placeholder:text-couleurprimaire/40">
+          <button id="ouvrir_calendrier" type="button" class="lien flex h-14 w-14 shrink-0 items-center justify-center text-couleurprimaire" aria-label="Ouvrir le calendrier">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+          </button>
+        </div>
+        <p id="erreur_date" class="min-h-[1.25rem] text-sm font-extrabold text-couleursecondaire" role="alert" aria-live="polite"></p>
+        <div id="calendrier" class="absolute left-0 right-0 top-full z-20 -mt-1 rounded-xl border-[3px] border-couleurprimaire bg-[#fffdf6] p-3 ombre" hidden>
+          <div class="mb-2 flex items-center justify-between">
+            <button id="mois_precedent" type="button" class="lien flex h-10 w-10 items-center justify-center rounded-lg border-[3px] border-couleurprimaire bg-white text-xl font-extrabold text-couleurprimaire disabled:opacity-30" aria-label="Mois précédent">&lsaquo;</button>
+            <p id="titre_mois" class="font-marqueur text-xl text-couleurprimaire" aria-live="polite"></p>
+            <button id="mois_suivant" type="button" class="lien flex h-10 w-10 items-center justify-center rounded-lg border-[3px] border-couleurprimaire bg-white text-xl font-extrabold text-couleurprimaire" aria-label="Mois suivant">&rsaquo;</button>
+          </div>
+          <div class="mb-1 grid grid-cols-7 text-center text-xs font-extrabold text-couleurprimaire/60"><span>Lu</span><span>Ma</span><span>Me</span><span>Je</span><span>Ve</span><span>Sa</span><span>Di</span></div>
+          <div id="grille_jours" class="grid grid-cols-7 gap-1"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="etape_3" class="etape flex flex-col gap-5" hidden>
+      <h2 id="titre_merci" class="font-marqueur text-[2.1rem] font-normal leading-tight text-couleurprimaire"></h2>
+      <p class="text-base font-semibold leading-snug text-couleurprimaire/80">On te contacte sur WhatsApp très vite. Pour aller plus vite, écris-nous maintenant.</p>
+      <a id="lien_whatsapp" href="https://wa.me/" target="_blank" rel="noopener" class="bouton ombre flex h-14 w-full items-center justify-center gap-3 rounded-xl border-[3px] border-couleurprimaire bg-[#25d366] text-lg font-extrabold text-couleurprimaire transition-transform">
+        <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Ouvrir WhatsApp
+      </a>
+    </section>
+  </div>
+
+  <!-- Fiab: le pied de page garde les infos de confiance en bas de l'écran, sans faire défiler. Sur les écrans très courts la phrase sur les données disparaît pour ne pas créer de défilement. -->
+  <footer class="mx-auto mt-4 w-full max-w-md border-t-[3px] border-dashed border-couleurprimaire/40 pt-3 text-xs font-semibold text-couleurprimaire/70">
+    <div class="flex items-center justify-between gap-3"><span class="font-extrabold text-couleurprimaire">FIAB Web Identity</span><span>Parakou, Bénin</span></div>
+    <p class="mt-1 hidden leading-snug [@media(min-height:700px)]:block">Ton numéro sert uniquement à te contacter pour la démo.</p>
+    <p class="mt-1">© 2026 FIAB Web Identity</p>
+  </footer>
+</div>
+
+<!-- Fiab: filet de sécurité. Si le script plante, au lieu de ne rien faire en silence le formulaire affiche la vraie cause en bas de page, ce qui me permet de la lire et de la corriger. -->
+<p id="alerte_js" class="fixed inset-x-0 bottom-0 z-50 bg-couleursecondaire px-4 py-2 text-xs font-extrabold text-white" role="alert" hidden></p>
+<script>
+  window.addEventListener("error", function (e) {
+    var zone = document.getElementById("alerte_js");
+    if (!zone) { return; }
+    zone.hidden = false;
+    zone.textContent = "Erreur technique : " + (e.message || "inconnue") + (e.lineno ? " (ligne " + e.lineno + ")" : "");
+  });
+</script>
+<script>
+  /* Fiab: les deux réglages à modifier avant la mise en ligne. URL_WEBHOOK reçoit chaque prospect (mon workflow n8n), NUMERO_WHATSAPP est mon numéro au format international sans le plus. */
+  var URL_WEBHOOK = "https://automation.fiab.website/webhook/prospect";
+  var NUMERO_WHATSAPP = "2290155737210";
+  var ID_PIXEL = "";
+
+  /* Fiab: la source de la pub se lit dans l'adresse, pas dans le code. Dans Meta j'ajoute ?utm_source=facebook&utm_campaign=...&utm_content=... et chaque prospect arrive avec sa propre étiquette. Sans paramètre, la source vaut "direct". */
+  var parametres_url = new URLSearchParams(window.location.search);
+  var origine = {
+    source: parametres_url.get("utm_source") || "direct",
+    campagne: parametres_url.get("utm_campaign") || "",
+    contenu: parametres_url.get("utm_content") || "",
+    fbclid: parametres_url.get("fbclid") || ""
+  };
+
+  /* Fiab: le pixel Facebook ne se charge que si j'ai renseigné ID_PIXEL. Il suit les visites, mais l'événement qui compte pour Meta est Contact, déclenché uniquement quand le prospect clique sur Ouvrir WhatsApp. */
+  function demarrer_pixel() {
+    if (!ID_PIXEL || window.fbq) { return; }
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    window.fbq("init", ID_PIXEL);
+    window.fbq("track", "PageView");
+  }
+  demarrer_pixel();
+
+  function lire_cookie(nom) {
+    var m = document.cookie.match(new RegExp("(?:^|; )" + nom + "=([^;]*)"));
+    return m ? decodeURIComponent(m[1]) : "";
+  }
+
+  /* Fiab: les questions de l'étape 2. Elles servent à trier les prospects et à personnaliser mon premier message, pas à les décourager. */
+  var QUESTIONS = [
+    { cle: "commerce", texte: "Tu vends quoi ?", choix: ["Électronique", "Vêtements", "Alimentation", "Autre chose"] },
+    { cle: "methode", texte: "Tu notes tes ventes comment ?", choix: ["Dans un cahier", "Excel ou Sheets", "Je ne note pas vraiment"] },
+    { cle: "volume", texte: "Combien de ventes par jour ?", choix: ["Moins de 10", "10 à 30", "Plus de 30"] },
+    { cle: "moment", texte: "On te contacte quand ?", choix: ["Ce soir", "Demain"] }
+  ];
+
+  var prospect = { prenom: "", telephone: "" };
+  var reponses = {};
+  var index_question = 0;
+  var etape_courante = 1;
+  var etape1_envoyee = false;
+  var termine = false;
+  var contact_envoye = false;
+  var historique_ok = true;
+
+  var el = function (id) { return document.getElementById(id); };
+
+  /* Fiab: la mémoire du navigateur. Si le prospect ferme l'onglet ou rafraîchit, il retrouve son prénom, son numéro, ses réponses et l'étape où il était. Je garde 24 heures, ensuite on repart propre. Tout est dans un try, car dans certains navigateurs privés le stockage est interdit et le formulaire doit marcher quand même. */
+  var CLE_MEMOIRE = "fiab_formulaire_demo";
+  var DUREE_MEMOIRE = 24 * 60 * 60 * 1000;
+
+  function sauvegarder() {
+    try {
+      localStorage.setItem(CLE_MEMOIRE, JSON.stringify({
+        maj: Date.now(), prenom: el("prenom").value, indicatif: el("indicatif").value, numero: el("numero").value,
+        prospect: prospect, reponses: reponses, index_question: index_question, etape: etape_courante,
+        etape1_envoyee: etape1_envoyee, termine: termine, contact_envoye: contact_envoye
+      }));
+    } catch (erreur) {}
+  }
+
+  function lire_memoire() {
+    try {
+      var brut = localStorage.getItem(CLE_MEMOIRE);
+      if (!brut) { return null; }
+      var m = JSON.parse(brut);
+      if (!m || Date.now() - m.maj > DUREE_MEMOIRE) { localStorage.removeItem(CLE_MEMOIRE); return null; }
+      return m;
+    } catch (erreur) { return null; }
+  }
+
+  /* Fiab: la date du jour en heure locale, pas en UTC, sinon le soir au Bénin le calendrier proposerait déjà demain ou refuserait aujourd'hui. */
+  function date_du_jour() {
+    var d = new Date();
+    var deux = function (n) { return (n < 10 ? "0" : "") + n; };
+    return d.getFullYear() + "-" + deux(d.getMonth() + 1) + "-" + deux(d.getDate());
+  }
+
+  /* Fiab: on affiche le numéro par paires de chiffres pendant la frappe, c'est plus lisible et le prospect voit tout de suite une faute. */
+  function formater_numero(valeur) {
+    var chiffres = valeur.replace(/\D/g, "").slice(0, 10);
+    return chiffres.replace(/(\d{2})(?=\d)/g, "$1 ");
+  }
+
+  /* Fiab: une seule étape visible à la fois, et le titre n'est affiché qu'à l'étape 1 pour que tout tienne sans défilement. */
+  function afficher_etape(numero) {
+    etape_courante = numero;
+    ["etape_1", "etape_2", "etape_3"].forEach(function (id, i) { el(id).hidden = i + 1 !== numero; });
+    el("accroche").hidden = numero !== 1;
+    var bloc = el("etape_" + numero);
+    bloc.style.animation = "none"; void bloc.offsetWidth; bloc.style.animation = "";
+    sauvegarder();
+  }
+
+  /* Fiab: je range chaque écran dans l'historique du navigateur. Comme ça le bouton retour du téléphone ramène à la question d'avant au lieu de quitter la page. */
+  function montrer(numero, index) {
+    index_question = index || 0;
+    if (numero === 2) { afficher_question(); }
+    if (numero === 3) { preparer_merci(); }
+    afficher_etape(numero);
+  }
+
+  function aller(numero, index) {
+    try { history.pushState({ etape: numero, index: index || 0 }, ""); } catch (erreur) { historique_ok = false; }
+    montrer(numero, index);
+  }
+
+  window.addEventListener("popstate", function (e) {
+    var etat = e.state;
+    if (etat && etat.etape) { montrer(etat.etape, etat.index); } else { montrer(1, 0); }
+  });
+
+  el("retour").addEventListener("click", function () {
+    if (historique_ok && history.state && history.state.etape) { history.back(); return; }
+    if (index_question > 0) { montrer(2, index_question - 1); } else { montrer(1, 0); }
+  });
+
+  function valider_formulaire() {
+    var prenom = el("prenom").value.trim();
+    var chiffres = el("numero").value.replace(/\D/g, "");
+    var valide = true;
+    el("erreur_prenom").textContent = "";
+    el("erreur_numero").textContent = "";
+    if (prenom.length < 2) { el("erreur_prenom").textContent = "Écris ton prénom."; valide = false; }
+    if (chiffres.length < 8 || chiffres.length > 10) { el("erreur_numero").textContent = "Ce numéro semble incomplet."; valide = false; }
+    if (!valide) { (prenom.length < 2 ? el("prenom") : el("numero")).focus(); }
+    return valide ? { prenom: prenom, telephone: "+" + el("indicatif").value + chiffres } : null;
+  }
+
+  /* Fiab: un seul point d'envoi, utilisé pour les trois moments (étape 1, étape 2, clic WhatsApp). Sans URL_WEBHOOK on simule le succès pour pouvoir tester le design. J'ai ajouté un délai maximum de 12 secondes, sinon un webhook qui ne répond pas laissait le bouton tourner sans fin, et chaque échec écrit la cause dans la console pour que je puisse la lire. */
+  function envoyer_donnees(donnees) {
+    if (!URL_WEBHOOK) { return new Promise(function (resolve) { setTimeout(resolve, 600); }); }
+    var coupe = new AbortController();
+    var minuteur = setTimeout(function () { coupe.abort(); }, 12000);
+    var corps = Object.assign({
+      source: origine.source, campagne: origine.campagne, contenu: origine.contenu,
+      fbp: lire_cookie("_fbp"),
+      fbc: lire_cookie("_fbc") || (origine.fbclid ? "fb.1." + Date.now() + "." + origine.fbclid : ""),
+      envoye_le: new Date().toISOString()
+    }, donnees);
+    return fetch(URL_WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(corps),
+      keepalive: true,
+      signal: coupe.signal
+    }).then(function (reponse) {
+      clearTimeout(minuteur);
+      if (!reponse.ok) { throw new Error("le webhook a répondu " + reponse.status); }
+    }).catch(function (erreur) {
+      clearTimeout(minuteur);
+      console.error("Formulaire: envoi étape " + donnees.etape + " échoué.", erreur);
+      throw erreur;
+    });
+  }
+
+  function attente(active) {
+    el("bouton_envoyer").disabled = active;
+    el("bouton_envoyer").style.opacity = active ? "0.85" : "";
+    el("icone_attente").classList.toggle("hidden", !active);
+    el("texte_bouton").textContent = active ? "Envoi en cours" : "Je veux voir la démo";
+  }
+
+  el("numero").addEventListener("input", function (e) { e.target.value = formater_numero(e.target.value); });
+
+  el("etape_1").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var donnees = valider_formulaire();
+    if (!donnees) { return; }
+    el("erreur_envoi").classList.add("hidden");
+    /* Fiab: si le prospect revient corriger son prénom ou son numéro, on ne renvoie rien tant que rien n'a changé. S'il a changé le numéro, j'envoie une correction avec l'ancien numéro pour que n8n mette à jour la même ligne au lieu d'en créer une seconde. */
+    var change = donnees.prenom !== prospect.prenom || donnees.telephone !== prospect.telephone;
+    if (etape1_envoyee && !change) { demarrer_questions(donnees); return; }
+    var charge = { etape: 1, prenom: donnees.prenom, telephone: donnees.telephone, piege: el("piege_robot").value };
+    if (etape1_envoyee) { charge.correction = true; charge.ancien_telephone = prospect.telephone; }
+    attente(true);
+    envoyer_donnees(charge)
+      .then(function () {
+        etape1_envoyee = true;
+        /* Fiab: événement perso, juste pour mesurer combien commencent. Meta n'optimise pas dessus, l'objectif reste Contact. */
+        if (window.fbq) { window.fbq("trackCustom", "DebutFormulaire"); }
+        demarrer_questions(donnees);
+      })
+      .catch(function () { el("erreur_envoi").classList.remove("hidden"); })
+      .then(function () { attente(false); });
+  });
+
+  function demarrer_questions(donnees) {
+    prospect = donnees;
+    el("salut").textContent = "C'est noté, " + donnees.prenom + ".";
+    aller(2, 0);
+  }
+
+  function afficher_question() {
+    var q = QUESTIONS[index_question];
+    el("question").textContent = q.texte;
+    Array.prototype.forEach.call(document.querySelectorAll(".trait"), function (t, i) {
+      t.className = "trait h-2 flex-1 rounded-sm " + (i <= index_question ? "bg-couleurprimaire" : "bg-couleurprimaire/20");
+    });
+    var zone = el("choix");
+    zone.innerHTML = "";
+    el("zone_date").hidden = q.cle !== "moment";
+    el("erreur_date").textContent = "";
+    el("date_texte").value = reponses.date_contact ? reponses.date_contact.split("-").reverse().join("/") : "";
+    fermer_calendrier();
+    q.choix.forEach(function (libelle) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = libelle;
+      var choisi = reponses[q.cle] === libelle;
+      b.className = "choix ombre min-h-[3.5rem] rounded-xl border-[3px] border-couleurprimaire px-4 py-3 text-left text-base font-extrabold transition-transform " + (choisi ? "bg-couleursecondaire text-white" : "bg-white text-couleurprimaire");
+      b.addEventListener("click", function () {
+        reponses[q.cle] = libelle;
+        delete reponses.date_contact;
+        el("date_texte").value = "";
+        Array.prototype.forEach.call(zone.children, function (autre) { autre.className = autre.className.replace("bg-couleursecondaire text-white", "bg-white text-couleurprimaire"); });
+        b.className = b.className.replace("bg-white text-couleurprimaire", "bg-couleursecondaire text-white");
+        sauvegarder();
+        setTimeout(question_suivante, 220);
+      });
+      zone.appendChild(b);
+    });
+  }
+
+  function question_suivante() {
+    if (index_question + 1 < QUESTIONS.length) { aller(2, index_question + 1); } else { terminer(); }
+  }
+
+  /* Fiab: le message WhatsApp déjà écrit et le prénom sur l'écran de fin. Séparé de terminer pour pouvoir réafficher cet écran après un rafraîchissement sans renvoyer les réponses. */
+  function preparer_merci() {
+    el("titre_merci").textContent = "Merci " + prospect.prenom + " !";
+    var message = "Bonjour, je suis " + prospect.prenom + ". Je viens de remplir le formulaire pour voir la démo.";
+    el("lien_whatsapp").href = NUMERO_WHATSAPP ? "https://wa.me/" + NUMERO_WHATSAPP + "?text=" + encodeURIComponent(message) : "https://wa.me/";
+  }
+
+  /* Fiab: à la fin, ou si le prospect passe, on envoie ce qu'il a répondu et on lui offre le bouton WhatsApp avec un message déjà écrit. */
+  function terminer() {
+    termine = true;
+    envoyer_donnees({ etape: 2, telephone: prospect.telephone, reponses: reponses }).catch(function () {});
+    aller(3, 0);
+  }
+
+  /* Fiab: le calendrier maison. Je le dessine moi-même pour qu'il porte mes couleurs, un input date natif ne se stylise pas. Semaine qui commence le lundi, jours passés désactivés, on ne peut pas reculer avant le mois en cours. */
+  var NOMS_MOIS = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+  var mois_affiche = new Date();
+  mois_affiche.setDate(1);
+
+  function en_iso(annee, mois, jour) {
+    var deux = function (n) { return (n < 10 ? "0" : "") + n; };
+    return annee + "-" + deux(mois + 1) + "-" + deux(jour);
+  }
+
+  function dessiner_calendrier() {
+    var annee = mois_affiche.getFullYear();
+    var mois = mois_affiche.getMonth();
+    var aujourdhui = date_du_jour();
+    var decalage = (new Date(annee, mois, 1).getDay() + 6) % 7;
+    var nombre_jours = new Date(annee, mois + 1, 0).getDate();
+    var grille = el("grille_jours");
+    grille.innerHTML = "";
+    el("titre_mois").textContent = NOMS_MOIS[mois] + " " + annee;
+    el("mois_precedent").disabled = en_iso(annee, mois, 1) <= aujourdhui.slice(0, 8) + "01";
+    for (var v = 0; v < decalage; v++) { grille.appendChild(document.createElement("span")); }
+    for (var j = 1; j <= nombre_jours; j++) {
+      (function (jour) {
+        var iso = en_iso(annee, mois, jour);
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = jour;
+        var passe = iso < aujourdhui;
+        b.disabled = passe;
+        b.className = "choix flex h-10 items-center justify-center rounded-lg text-base font-extrabold " +
+          (passe ? "text-couleurprimaire/25" : iso === aujourdhui ? "border-[3px] border-couleursecondaire text-couleurprimaire hover:bg-couleursecondaire hover:text-white" : "text-couleurprimaire hover:bg-couleursecondaire hover:text-white");
+        if (!passe) { b.addEventListener("click", function () { valider_date(iso); }); }
+        grille.appendChild(b);
+      })(j);
+    }
+  }
+
+  function ouvrir_calendrier() {
+    var courante = new Date();
+    courante.setDate(1);
+    mois_affiche = courante;
+    dessiner_calendrier();
+    el("calendrier").hidden = false;
+  }
+
+  function fermer_calendrier() { el("calendrier").hidden = true; }
+
+  /* Fiab: une seule porte de sortie pour la date, qu'elle vienne d'un clic ou d'une saisie. Elle refuse le passé et les dates qui n'existent pas, comme le 31/02. */
+  function valider_date(iso) {
+    if (iso < date_du_jour()) { el("erreur_date").textContent = "Choisis aujourd'hui ou un jour à venir."; return; }
+    reponses.moment = "Le " + iso;
+    reponses.date_contact = iso;
+    fermer_calendrier();
+    terminer();
+  }
+
+  el("ouvrir_calendrier").addEventListener("click", function () { if (el("calendrier").hidden) { ouvrir_calendrier(); } else { fermer_calendrier(); } });
+  el("mois_precedent").addEventListener("click", function () { mois_affiche.setMonth(mois_affiche.getMonth() - 1); dessiner_calendrier(); });
+  el("mois_suivant").addEventListener("click", function () { mois_affiche.setMonth(mois_affiche.getMonth() + 1); dessiner_calendrier(); });
+
+  /* Fiab: sur téléphone, toucher le champ ouvre le calendrier et pas le clavier. Sur ordinateur, on peut taper la date, les barres obliques s'ajoutent toutes seules. */
+  var sur_ecran_tactile = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+  if (sur_ecran_tactile) { el("date_texte").setAttribute("inputmode", "none"); }
+  el("date_texte").addEventListener("focus", function () { if (el("calendrier").hidden) { ouvrir_calendrier(); } });
+  el("date_texte").addEventListener("click", function () { if (el("calendrier").hidden) { ouvrir_calendrier(); } });
+  el("date_texte").addEventListener("input", function (e) {
+    var chiffres = e.target.value.replace(/\D/g, "").slice(0, 8);
+    var texte = chiffres.slice(0, 2);
+    if (chiffres.length > 2) { texte += "/" + chiffres.slice(2, 4); }
+    if (chiffres.length > 4) { texte += "/" + chiffres.slice(4); }
+    e.target.value = texte;
+    el("erreur_date").textContent = "";
+    if (chiffres.length < 8) { return; }
+    var jour = +chiffres.slice(0, 2), mois = +chiffres.slice(2, 4) - 1, annee = +chiffres.slice(4);
+    var d = new Date(annee, mois, jour);
+    if (d.getFullYear() !== annee || d.getMonth() !== mois || d.getDate() !== jour) { el("erreur_date").textContent = "Cette date n'existe pas."; return; }
+    valider_date(en_iso(annee, mois, jour));
+  });
+  document.addEventListener("click", function (e) { if (!el("zone_date").contains(e.target)) { fermer_calendrier(); } });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { fermer_calendrier(); } });
+
+  el("passer").addEventListener("click", terminer);
+
+  /* Fiab: toute saisie de prénom ou de numéro est mise de côté au fil de la frappe. */
+  el("prenom").addEventListener("input", sauvegarder);
+  el("numero").addEventListener("input", sauvegarder);
+  el("indicatif").addEventListener("change", sauvegarder);
+
+  /* Fiab: c'est ici que se joue ma conversion. Contact part uniquement quand le prospect clique sur Ouvrir WhatsApp, donc quand il initie lui-même la conversation. Le même identifiant d'événement part vers mon webhook, pour que n8n puisse renvoyer l'événement à Meta côté serveur sans le compter deux fois. */
+  el("lien_whatsapp").addEventListener("click", function () {
+    if (contact_envoye) { return; }
+    contact_envoye = true;
+    sauvegarder();
+    var identifiant = "contact_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+    if (window.fbq) { window.fbq("track", "Contact", { content_name: "demo_whatsapp", content_category: origine.contenu || origine.source }, { eventID: identifiant }); }
+    envoyer_donnees({ etape: 3, telephone: prospect.telephone, event_id: identifiant }).catch(function () {});
+  });
+
+  /* Fiab: au chargement, je reprends là où le prospect s'était arrêté, sinon je commence à l'étape 1. */
+  (function demarrer() {
+    var m = lire_memoire();
+    try { history.replaceState({ etape: 1, index: 0 }, ""); } catch (erreur) { historique_ok = false; }
+    if (!m) { return; }
+    el("prenom").value = m.prenom || "";
+    el("indicatif").value = m.indicatif || "229";
+    el("numero").value = m.numero || "";
+    prospect = m.prospect || prospect;
+    reponses = m.reponses || {};
+    etape1_envoyee = !!m.etape1_envoyee;
+    termine = !!m.termine;
+    contact_envoye = !!m.contact_envoye;
+    if (m.etape === 2 && etape1_envoyee) { el("salut").textContent = "C'est noté, " + prospect.prenom + "."; aller(2, m.index_question); }
+    else if (m.etape === 3 && termine) { aller(3, 0); }
+  })();
+
+  /* Fiab: témoin dans la console. Si je ne vois pas ce message en ouvrant la page, le script ne s'est pas chargé. */
+  console.log("Formulaire FIAB prêt.");
+</script>
+</body>
+</html>
