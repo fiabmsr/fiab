@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Étude 2026 · Gérer son commerce depuis WhatsApp</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=poppins:400,500,600,700&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<link rel="icon" type="image/png" href="../favicon.png" />
+<script>
+  /* Fiab: mes couleurs officielles. Orange en couleur primaire, noir et blanc en couleurs secondaires. */
+  tailwind.config = {
+    theme: { extend: {
+      colors: { couleurprimaire: "#ff5e00", couleursecondaire: "#0c0707" },
+      fontFamily: { poppins: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"] }
+    } }
+  };
+</script>
+<style>
+  :root { --encre: #0c0707; --orange: #ff5e00; color-scheme: light; }
+  body { background: #ffffff; color: var(--encre); margin: 0; font-family: "Poppins", ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .ombre { box-shadow: 0 1px 2px rgba(12,7,7,0.06), 0 8px 20px -12px rgba(12,7,7,0.30); }
+  .champ:focus-within { border-color: var(--orange); box-shadow: 0 0 0 4px rgba(255,94,0,0.15); }
+  .bouton:active:not(:disabled), .choix:active { transform: translateY(1px); }
+  .bouton:hover:not(:disabled) { filter: brightness(1.05); }
+  .choix:hover { border-color: var(--encre); }
+  .bouton:focus-visible, .choix:focus-visible, .lien:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .etape { animation: entree 0.3s ease-out both; }
+  @keyframes entree { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .etape { animation: none; } .animate-spin { animation: none; } }
+</style>
+</head>
+<body class="selection:bg-couleurprimaire selection:text-white">
+<div class="flex min-h-[100dvh] flex-col px-6 pb-4 pt-6">
+  <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-5">
+
+    <!-- Fiab: l'accueil dit clairement ce que je prépare et pourquoi je pose ces questions. -->
+    <section id="accueil" class="etape flex flex-col gap-4">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-couleursecondaire/60">FIAB Web Identity · Étude 2026</p>
+      <h1 class="text-[2rem] font-semibold leading-[1.1] tracking-tight">Gérez votre commerce <span class="text-couleurprimaire">sans quitter WhatsApp</span></h1>
+      <p class="text-base leading-snug text-couleursecondaire/75">Nous préparons un service qui permet de gérer ses ventes, ses reçus, son stock et ses finances directement dans WhatsApp. Avant de le lancer, nous voulons comprendre comment vous travaillez aujourd'hui.</p>
+      <ul class="flex flex-col gap-2 text-sm font-medium text-couleursecondaire/80">
+        <li class="flex gap-2"><span class="text-couleurprimaire">•</span> <span id="nb_questions">10</span> questions, environ 2 minutes.</li>
+        <li class="flex gap-2"><span class="text-couleurprimaire">•</span> Vos réponses restent anonymes. Si vous demandez une démo, elles servent seulement à préparer notre échange.</li>
+      </ul>
+      <button id="commencer" type="button" class="bouton ombre mt-2 flex h-14 w-full items-center justify-center rounded-lg border border-couleurprimaire bg-couleurprimaire text-lg font-semibold text-white transition-transform">Participer à l'étude</button>
+    </section>
+
+    <!-- Fiab: une question à la fois. Les choix uniques passent tout seuls à la suite, les choix multiples, le texte libre et la présentation ont un bouton Continuer. -->
+    <section id="ecran_question" class="etape flex flex-col gap-4" hidden>
+      <div class="flex items-center justify-between gap-4">
+        <button id="retour" type="button" class="lien shrink-0 text-sm font-semibold text-couleursecondaire/70 underline underline-offset-4">&larr; Retour</button>
+        <p id="compteur" class="text-sm font-semibold text-couleursecondaire/60"></p>
+        <button id="passer" type="button" class="lien shrink-0 text-sm font-semibold text-couleursecondaire/70 underline underline-offset-4">Passer</button>
+      </div>
+      <div class="h-1.5 w-full overflow-hidden rounded-full bg-couleursecondaire/10" aria-hidden="true"><div id="progression" class="h-full rounded-full bg-couleurprimaire transition-all duration-300" style="width:0"></div></div>
+
+      <div>
+        <h2 id="question" class="text-[1.45rem] font-semibold leading-snug tracking-tight" aria-live="polite"></h2>
+        <p id="aide" class="mt-1 text-sm font-medium text-couleursecondaire/60"></p>
+      </div>
+
+      <!-- Fiab: l'écran de présentation du produit. Il arrive après les questions sur les problèmes, pour ne pas les influencer, et avant l'utilité et le prix, pour que la personne sache de quoi on parle. -->
+      <div id="zone_presentation" class="flex flex-col gap-3" hidden>
+        <div class="flex flex-col gap-2 rounded-lg bg-[#efeae2] p-3" role="img" aria-label="Exemple de conversation : le commerçant écrit sa vente, le service enregistre la vente, envoie le reçu et met à jour le stock.">
+          <div class="ml-auto max-w-[85%] rounded-lg rounded-tr-none bg-[#d9fdd3] px-3 py-2 text-sm font-medium shadow-sm">vente 3 sacs de riz 45000 Awa</div>
+          <div class="mr-auto max-w-[85%] rounded-lg rounded-tl-none bg-white px-3 py-2 text-sm leading-snug shadow-sm"><span class="font-semibold">✓ Vente enregistrée : 45 000 F</span><br>Reçu envoyé à Awa<br>Stock riz : 12 sacs restants</div>
+          <div class="ml-auto max-w-[85%] rounded-lg rounded-tr-none bg-[#d9fdd3] px-3 py-2 text-sm font-medium shadow-sm">bilan</div>
+          <div class="mr-auto max-w-[85%] rounded-lg rounded-tl-none bg-white px-3 py-2 text-sm leading-snug shadow-sm"><span class="font-semibold">Aujourd'hui : 9 ventes, 186 500 F</span><br>Dépenses : 22 000 F<br>Dettes clients à relancer : 3</div>
+        </div>
+        <ul class="flex flex-col gap-2">
+          <li class="ombre flex gap-3 rounded-lg border border-couleursecondaire/15 bg-white px-4 py-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-couleurprimaire"></span><div><p class="text-sm font-semibold">Ventes et reçus</p><p class="text-sm text-couleursecondaire/70">Un message suffit : la vente est notée et le reçu part au client.</p></div></li>
+          <li class="ombre flex gap-3 rounded-lg border border-couleursecondaire/15 bg-white px-4 py-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-couleurprimaire"></span><div><p class="text-sm font-semibold">Stock</p><p class="text-sm text-couleursecondaire/70">Toujours à jour, avec une alerte quand un produit va manquer.</p></div></li>
+          <li class="ombre flex gap-3 rounded-lg border border-couleursecondaire/15 bg-white px-4 py-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-couleurprimaire"></span><div><p class="text-sm font-semibold">Finances</p><p class="text-sm text-couleursecondaire/70">Recettes, dépenses et bilan du jour, reçu chaque soir.</p></div></li>
+          <li class="ombre flex gap-3 rounded-lg border border-couleursecondaire/15 bg-white px-4 py-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-couleurprimaire"></span><div><p class="text-sm font-semibold">Dettes clients</p><p class="text-sm text-couleursecondaire/70">Qui vous doit combien, avec des rappels automatiques.</p></div></li>
+        </ul>
+      </div>
+
+      <div id="choix" class="flex flex-col gap-2"></div>
+
+      <div id="zone_autre" class="flex flex-col gap-1.5" hidden>
+        <label for="texte_autre" class="text-sm font-semibold">Précisez</label>
+        <div class="champ rounded-lg border border-couleursecondaire/20 bg-white ombre">
+          <input id="texte_autre" type="text" maxlength="80" class="h-14 w-full rounded-lg bg-transparent px-4 text-lg font-medium outline-none placeholder:text-couleursecondaire/40" placeholder="Écrivez ici">
+        </div>
+      </div>
+
+      <div id="zone_libre" class="flex flex-col gap-1.5" hidden>
+        <div class="champ rounded-lg border border-couleursecondaire/20 bg-white ombre">
+          <textarea id="texte_libre" rows="4" maxlength="500" class="w-full resize-none rounded-lg bg-transparent px-4 py-3 text-base font-medium outline-none placeholder:text-couleursecondaire/40" placeholder="Par exemple : je ne sais jamais exactement ce qu'il me reste en stock"></textarea>
+        </div>
+      </div>
+
+      <!-- Fiab: le contact n'apparaît qu'à la dernière question, et seulement si la personne veut une démo. -->
+      <div id="zone_contact" class="flex flex-col gap-3" hidden>
+        <div class="flex flex-col gap-1.5">
+          <label for="prenom" class="text-sm font-semibold">Votre prénom</label>
+          <div class="champ rounded-lg border border-couleursecondaire/20 bg-white ombre">
+            <input id="prenom" type="text" autocomplete="given-name" placeholder="Awa" class="h-14 w-full rounded-lg bg-transparent px-4 text-lg font-semibold outline-none placeholder:font-normal placeholder:text-couleursecondaire/40">
+          </div>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label for="numero" class="text-sm font-semibold">Votre numéro WhatsApp</label>
+          <div class="champ flex rounded-lg border border-couleursecondaire/20 bg-white ombre">
+            <select id="indicatif" aria-label="Indicatif du pays" class="h-14 w-[6.6rem] shrink-0 rounded-l-lg border-r border-couleursecondaire/20 bg-couleursecondaire/5 px-3 text-base font-semibold outline-none">
+              <option value="229" selected>BJ +229</option>
+              <option value="228">TG +228</option>
+              <option value="234">NG +234</option>
+              <option value="227">NE +227</option>
+              <option value="226">BF +226</option>
+              <option value="225">CI +225</option>
+            </select>
+            <input id="numero" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="01 XX XX XX XX" class="h-14 min-w-0 flex-1 rounded-r-lg bg-transparent px-4 text-lg font-semibold tracking-wide outline-none placeholder:font-normal placeholder:text-couleursecondaire/40">
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true"><input id="piege_robot" type="text" tabindex="-1" autocomplete="off" data-lpignore="true" data-1p-ignore="true"></div>
+
+      <p id="erreur" class="min-h-[1.25rem] text-sm font-semibold text-couleurprimaire" role="alert" aria-live="polite"></p>
+
+      <button id="continuer" type="button" class="bouton ombre flex h-14 w-full items-center justify-center gap-3 rounded-lg border border-couleurprimaire bg-couleurprimaire text-lg font-semibold text-white transition-transform" hidden>
+        <span id="texte_continuer">Continuer</span>
+        <svg id="icone_attente" class="hidden h-6 w-6 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9" /></svg>
+      </button>
+    </section>
+
+    <section id="fin" class="etape flex flex-col gap-4" hidden>
+      <h2 id="titre_fin" class="text-[1.8rem] font-semibold leading-tight tracking-tight"></h2>
+      <p id="texte_fin" class="text-base font-medium leading-snug text-couleursecondaire/75"></p>
+      <a id="lien_partage" href="https://wa.me/" target="_blank" rel="noopener" class="bouton flex h-14 w-full items-center justify-center rounded-lg border border-couleursecondaire/20 bg-white text-base font-semibold transition-transform">Partager l'étude à un entrepreneur</a>
+      <button id="nouveau" type="button" class="bouton ombre flex h-14 w-full items-center justify-center rounded-lg border border-couleursecondaire bg-couleursecondaire text-base font-semibold text-white transition-transform" hidden>Remplir un nouveau questionnaire</button>
+    </section>
+  </div>
+
+  <footer class="mx-auto mt-4 w-full max-w-md border-t border-couleursecondaire/10 pt-3 text-xs font-medium text-couleursecondaire/60">
+    <div class="flex items-center justify-between gap-3"><span class="font-semibold text-couleursecondaire">FIAB Web Identity</span><span>Parakou, Bénin</span></div>
+    <p class="mt-1 leading-snug">Les réponses servent uniquement à cette étude.</p>
+    <p class="mt-1">© 2026 FIAB Web Identity</p>
+  </footer>
+</div>
+
+<p id="alerte_js" class="fixed inset-x-0 bottom-0 z-50 bg-couleurprimaire px-4 py-2 text-xs font-semibold text-white" role="alert" hidden></p>
+<script>
+  window.addEventListener("error", function (e) {
+    var zone = document.getElementById("alerte_js");
+    if (!zone) { return; }
+    zone.hidden = false;
+    zone.textContent = "Erreur technique : " + (e.message || "inconnue") + (e.lineno ? " (ligne " + e.lineno + ")" : "");
+  });
+</script>
+<script>
+  /* Fiab: les réglages à vérifier avant la mise en ligne. */
+  var URL_WEBHOOK = "https://automation.fiab.website/webhook/sondage";
+  /* Fiab: en test, rien n'est envoyé. Les données s'affichent dans la console. Repasser à false avant la mise en ligne. */
+  var est_test = true;
+
+  /* Fiab: la source se lit dans l'adresse. Un lien par canal : ?source=whatsapp, ?source=linkedin, ?source=groupes, ?source=statuts, ?source=assiste. */
+  var parametres = new URLSearchParams(window.location.search);
+  var source = parametres.get("source") || parametres.get("utm_source") || "direct";
+  var mode_assiste = source === "assiste";
+
+  var TACHES = ["Ventes et caisse", "Stock", "Reçus et factures", "Dépenses et finances", "Dettes clients et relances", "Commandes des clients", "Fournisseurs", "Équipe"];
+  var CHOIX_DEMO = "Oui, contactez-moi";
+
+  /* Fiab: les étapes. type "un" = un seul choix, "plusieurs" = choix multiples, "libre" = texte, "presentation" = écran du produit (ce n'est pas une question), "fin" = dernière question avec le contact.
+     Les questions 1 à 7 portent sur les problèmes et passent avant la présentation, pour que le produit n'influence pas les réponses. */
+  var QUESTIONS = [
+    { cle: "secteur", type: "un", texte: "Dans quel secteur travaillez-vous ?", choix: ["Commerce avec stock", "Vente en ligne", "Restauration", "École ou formation", "Services", "Livraison", "Autre"], autre: "Autre" },
+    { cle: "ville", type: "un", texte: "Dans quelle ville exercez-vous ?", choix: ["Parakou", "Cotonou", "Abomey-Calavi", "Porto-Novo", "Autre ville"], autre: "Autre ville" },
+    { cle: "effectif", type: "un", texte: "Combien de personnes travaillent avec vous ?", choix: ["Je travaille seul", "2 à 5", "6 à 20", "Plus de 20"] },
+    { cle: "taches_cahier", type: "plusieurs", texte: "Lesquelles de ces tâches gérez-vous de tête ou dans un cahier ?", aide: "Plusieurs choix possibles.", choix: TACHES.concat(["Aucune, tout est déjà noté ailleurs"]), seul: "Aucune, tout est déjà noté ailleurs" },
+    { cle: "taches_temps", type: "plusieurs", max: 3, texte: "Quelles sont les 3 tâches qui vous prennent le plus de temps ?", aide: "3 choix maximum.", choix: TACHES },
+    { cle: "tache_pertes", type: "un", texte: "Laquelle vous fait perdre le plus d'argent ou cause le plus d'erreurs ?", choix: TACHES },
+    { cle: "probleme", type: "libre", texte: "Si un seul problème de votre gestion pouvait disparaître demain, lequel choisiriez-vous ?", aide: "Écrivez avec vos mots, pas besoin de faire long." },
+    { cle: "presentation", type: "presentation", texte: "Voici le service que nous préparons", aide: "Tout se passe dans WhatsApp, sans installer d'application." },
+    { cle: "utilite", type: "un", texte: "Ce service vous serait-il utile pour votre activité ?", choix: ["Très utile", "Plutôt utile", "Peu utile", "Pas utile"] },
+    { cle: "budget", type: "un", texte: "Pour ce service, combien seriez-vous prêt à payer par mois ?", aide: "Ventes, reçus, stock, finances et dettes clients, le tout dans WhatsApp.", choix: ["0 F", "Moins de 5 000 F", "5 000 à 10 000 F", "10 000 à 20 000 F", "20 000 à 35 000 F", "Plus de 35 000 F"] },
+    { cle: "demo", type: "fin", texte: "Quand le service sera prêt, souhaitez-vous qu'on vous contacte pour une démo gratuite ?", choix: [CHOIX_DEMO, "Non merci"] }
+  ];
+  var NB_QUESTIONS = QUESTIONS.filter(function (q) { return q.type !== "presentation"; }).length;
+
+  var id_repondant = "";
+  var reponses = {};
+  var contact = { prenom: "", telephone: "" };
+  var index = 0;
+  var etape_max = 0;
+  var debut = null;
+  var envoye = false;
+  var envoi_en_cours = false;
+  var verrou = false;
+
+  var el = function (id) { return document.getElementById(id); };
+
+  /* Fiab: le numéro affiché à la personne ne compte pas l'écran de présentation. */
+  function numero_question(position) {
+    var n = 0;
+    for (var k = 0; k <= position; k++) { if (QUESTIONS[k].type !== "presentation") { n++; } }
+    return n;
+  }
+
+  /* Fiab: l'identifiant anonyme. Date et heure locales, plus 6 caractères au hasard. Exemple : 20261016-210437-k3f9qz. Il ne contient rien de personnel. */
+  function creer_id() {
+    var d = new Date();
+    var deux = function (n) { return (n < 10 ? "0" : "") + n; };
+    var hasard = Math.random().toString(36).slice(2, 8);
+    return d.getFullYear() + deux(d.getMonth() + 1) + deux(d.getDate()) + "-" + deux(d.getHours()) + deux(d.getMinutes()) + deux(d.getSeconds()) + "-" + hasard;
+  }
+
+  /* Fiab: la mémoire du navigateur garde l'identifiant et les réponses 7 jours. En mode assisté, je remplis pour plusieurs personnes sur mon téléphone : pas de mémoire. */
+  var CLE_MEMOIRE = "fiab_sondage_2026_v2";
+  var DUREE_MEMOIRE = 7 * 24 * 60 * 60 * 1000;
+
+  function sauvegarder() {
+    if (mode_assiste) { return; }
+    try {
+      localStorage.setItem(CLE_MEMOIRE, JSON.stringify({ maj: Date.now(), id: id_repondant, reponses: reponses, contact: contact, index: index, etape_max: etape_max, debut: debut, envoye: envoye }));
+    } catch (erreur) {}
+  }
+
+  function lire_memoire() {
+    if (mode_assiste) { return null; }
+    try {
+      var m = JSON.parse(localStorage.getItem(CLE_MEMOIRE) || "null");
+      if (!m || Date.now() - m.maj > DUREE_MEMOIRE) { localStorage.removeItem(CLE_MEMOIRE); return null; }
+      return m;
+    } catch (erreur) { return null; }
+  }
+
+  function afficher(ecran) {
+    ["accueil", "ecran_question", "fin"].forEach(function (id) { el(id).hidden = id !== ecran; });
+    var bloc = el(ecran);
+    bloc.style.animation = "none"; void bloc.offsetWidth; bloc.style.animation = "";
+    window.scrollTo(0, 0);
+  }
+
+  function montrer_erreur(texte) { el("erreur").textContent = texte; }
+  function effacer_erreur() { el("erreur").textContent = ""; }
+
+  function formater_numero(valeur) {
+    return valeur.replace(/\D/g, "").slice(0, 10).replace(/(\d{2})(?=\d)/g, "$1 ");
+  }
+
+  function besoin_contact() { return reponses.demo === CHOIX_DEMO; }
+
+  /* Fiab: un seul point d'envoi. En mode test (ou sans URL_WEBHOOK), pas de POST : on affiche les données dans la console. */
+  function envoyer_donnees(donnees) {
+    if (est_test || !URL_WEBHOOK) {
+      console.log("Sondage (mode test) : " + donnees.evenement + " · étape " + donnees.etape_numero, donnees);
+      return new Promise(function (resolve) { setTimeout(resolve, 300); });
+    }
+    var coupe = new AbortController();
+    var minuteur = setTimeout(function () { coupe.abort(); }, 12000);
+    return fetch(URL_WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(donnees),
+      keepalive: true,
+      signal: coupe.signal
+    }).then(function (reponse) {
+      clearTimeout(minuteur);
+      if (!reponse.ok) { throw new Error("le webhook a répondu " + reponse.status); }
+    }).catch(function (erreur) {
+      clearTimeout(minuteur);
+      console.error("Sondage : envoi « " + donnees.evenement + " » échoué.", erreur);
+      throw erreur;
+    });
+  }
+
+  /* Fiab: le contenu de chaque POST. donnees_etape = la réponse de l'étape en cours. autres_donnees = toutes les autres réponses déjà données.
+     Comme chaque envoi contient tout, un envoi perdu en route est rattrapé par le suivant. */
+  function construire_envoi(evenement, q, passe) {
+    var donnees_etape = {};
+    if (q) {
+      donnees_etape[q.cle] = reponses[q.cle] === undefined ? null : reponses[q.cle];
+      if (reponses[q.cle + "_precision"]) { donnees_etape[q.cle + "_precision"] = reponses[q.cle + "_precision"]; }
+    }
+    var autres_donnees = {};
+    Object.keys(reponses).forEach(function (cle) { if (!(cle in donnees_etape)) { autres_donnees[cle] = reponses[cle]; } });
+    return {
+      type: "sondage_fiab",
+      id: id_repondant,
+      evenement: evenement,
+      etape_numero: q ? index + 1 : 0,
+      etape_cle: q ? q.cle : "accueil",
+      etape_max: etape_max,
+      total_etapes: QUESTIONS.length,
+      passe: !!passe,
+      termine: evenement === "fin",
+      donnees_etape: donnees_etape,
+      autres_donnees: autres_donnees,
+      source: source,
+      campagne: parametres.get("utm_campaign") || "",
+      piege: el("piege_robot").value,
+      commence_le: new Date(debut || Date.now()).toISOString(),
+      envoye_le: new Date().toISOString(),
+      duree_secondes: Math.round((Date.now() - (debut || Date.now())) / 1000)
+    };
+  }
+
+  /* Fiab: les envois des étapes partent en arrière-plan. La personne n'attend jamais, et un échec ne la bloque pas. */
+  function envoyer_etape(q, passe) {
+    etape_max = Math.max(etape_max, index + 1);
+    sauvegarder();
+    envoyer_donnees(construire_envoi(passe ? "passe" : "etape", q, passe)).catch(function () {});
+  }
+
+  /* Fiab: un verrou empêche un double appui de sauter une question. Il se relâche quand la question suivante s'affiche. */
+  function avancer(q, passe, delai) {
+    if (verrou) { return; }
+    verrou = true;
+    envoyer_etape(q, passe);
+    setTimeout(suivante, delai);
+  }
+
+  /* Fiab: dessine les boutons de choix. Le choix sélectionné passe en noir, et les choix multiples ont une petite case orange. */
+  function peindre_choix(q) {
+    var liste = reponses[q.cle];
+    Array.prototype.forEach.call(el("choix").children, function (b) {
+      var valeur = b.dataset.valeur;
+      var choisi = q.type === "plusieurs" ? (liste || []).indexOf(valeur) >= 0 : liste === valeur;
+      b.className = "choix ombre flex w-full min-h-[3.25rem] items-center gap-3 rounded-lg border px-4 py-2.5 text-left text-base font-medium transition-colors " +
+        (choisi ? "border-couleursecondaire bg-couleursecondaire text-white" : "border-couleursecondaire/15 bg-white text-couleursecondaire");
+      b.setAttribute("aria-pressed", choisi ? "true" : "false");
+      b.innerHTML = "";
+      if (q.type === "plusieurs") {
+        var c = document.createElement("span");
+        c.className = "flex h-5 w-5 shrink-0 items-center justify-center rounded border text-xs font-bold " + (choisi ? "border-couleurprimaire bg-couleurprimaire text-white" : "border-couleursecondaire/30");
+        c.textContent = choisi ? "✓" : "";
+        b.appendChild(c);
+      }
+      var t = document.createElement("span");
+      t.textContent = valeur;
+      b.appendChild(t);
+    });
+    if (q.max) { el("aide").textContent = q.aide + " " + (liste || []).length + " sur " + q.max + "."; }
+  }
+
+  /* Fiab: le bouton Continuer n'apparaît que quand il sert : choix multiples, texte libre, présentation, champ Autre, dernière question. */
+  function maj_bouton(q) {
+    var autre_choisi = q.autre && reponses[q.cle] === q.autre;
+    el("continuer").hidden = !(q.type === "plusieurs" || q.type === "libre" || q.type === "presentation" || q.type === "fin" || autre_choisi);
+    el("texte_continuer").textContent = q.type === "fin" ? "Terminer" : "Continuer";
+  }
+
+  function afficher_question() {
+    var q = QUESTIONS[index];
+    verrou = false;
+    var est_presentation = q.type === "presentation";
+    el("compteur").textContent = est_presentation ? "Présentation" : "Question " + numero_question(index) + " sur " + NB_QUESTIONS;
+    el("progression").style.width = ((index + 1) / QUESTIONS.length * 100) + "%";
+    el("question").textContent = q.texte;
+    el("aide").textContent = q.aide || "";
+    el("aide").hidden = !q.aide;
+    el("passer").hidden = q.type === "fin" || est_presentation;
+    el("zone_presentation").hidden = !est_presentation;
+    effacer_erreur();
+
+    var zone = el("choix");
+    zone.innerHTML = "";
+    (q.choix || []).forEach(function (libelle) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.dataset.valeur = libelle;
+      b.addEventListener("click", function () { choisir(q, libelle); });
+      zone.appendChild(b);
+    });
+    peindre_choix(q);
+
+    el("zone_libre").hidden = q.type !== "libre";
+    if (q.type === "libre") { el("texte_libre").value = reponses[q.cle] || ""; }
+
+    var autre_choisi = q.autre && reponses[q.cle] === q.autre;
+    el("zone_autre").hidden = !autre_choisi;
+    el("texte_autre").value = autre_choisi ? (reponses[q.cle + "_precision"] || "") : "";
+
+    el("zone_contact").hidden = !(q.type === "fin" && besoin_contact());
+    maj_bouton(q);
+    afficher("ecran_question");
+  }
+
+  function choisir(q, libelle) {
+    if (verrou) { return; }
+    effacer_erreur();
+    if (q.type === "plusieurs") {
+      var liste = (reponses[q.cle] || []).slice();
+      var position = liste.indexOf(libelle);
+      if (position >= 0) {
+        liste.splice(position, 1);
+      } else if (q.seul === libelle) {
+        liste = [libelle];
+      } else {
+        liste = liste.filter(function (v) { return v !== q.seul; });
+        if (q.max && liste.length >= q.max) { montrer_erreur(q.max + " choix maximum. Retirez un choix pour en ajouter un autre."); return; }
+        liste.push(libelle);
+      }
+      reponses[q.cle] = liste;
+      peindre_choix(q);
+      sauvegarder();
+      return;
+    }
+
+    reponses[q.cle] = libelle;
+    peindre_choix(q);
+    sauvegarder();
+
+    if (q.type === "fin") { el("zone_contact").hidden = !besoin_contact(); return; }
+    if (q.autre && libelle === q.autre) { el("zone_autre").hidden = false; maj_bouton(q); el("texte_autre").focus(); return; }
+
+    el("zone_autre").hidden = true;
+    delete reponses[q.cle + "_precision"];
+    maj_bouton(q);
+    avancer(q, false, 220);
+  }
+
+  function suivante() {
+    if (index + 1 < QUESTIONS.length) { index++; sauvegarder(); afficher_question(); }
+  }
+
+  el("continuer").addEventListener("click", function () {
+    var q = QUESTIONS[index];
+    effacer_erreur();
+
+    if (q.type === "presentation") { reponses.presentation = "vue"; avancer(q, false, 0); return; }
+
+    if (q.type === "plusieurs" && !(reponses[q.cle] || []).length) { montrer_erreur("Choisissez au moins une réponse, ou appuyez sur Passer."); return; }
+
+    if (q.type === "libre") {
+      var texte = el("texte_libre").value.trim();
+      if (texte.length < 3) { montrer_erreur("Écrivez quelques mots, ou appuyez sur Passer."); return; }
+      reponses[q.cle] = texte;
+    }
+
+    if (q.autre && reponses[q.cle] === q.autre) {
+      var precision = el("texte_autre").value.trim();
+      if (precision.length < 2) { montrer_erreur("Précisez en quelques mots."); el("texte_autre").focus(); return; }
+      reponses[q.cle + "_precision"] = precision;
+    }
+
+    if (q.type === "fin") {
+      if (!reponses.demo) { montrer_erreur("Choisissez une réponse."); return; }
+      if (besoin_contact()) {
+        var prenom = el("prenom").value.trim();
+        var chiffres = el("numero").value.replace(/\D/g, "");
+        if (prenom.length < 2) { montrer_erreur("Écrivez votre prénom."); el("prenom").focus(); return; }
+        if (chiffres.length < 8 || chiffres.length > 10) { montrer_erreur("Ce numéro semble incomplet."); el("numero").focus(); return; }
+        contact = { prenom: prenom, telephone: "+" + el("indicatif").value + chiffres };
+      } else {
+        contact = { prenom: "", telephone: "" };
+      }
+      terminer();
+      return;
+    }
+
+    avancer(q, false, 0);
+  });
+
+  el("retour").addEventListener("click", function () {
+    if (verrou) { return; }
+    if (index > 0) { index--; sauvegarder(); afficher_question(); } else { afficher("accueil"); }
+  });
+
+  el("passer").addEventListener("click", function () {
+    if (verrou) { return; }
+    var q = QUESTIONS[index];
+    delete reponses[q.cle];
+    delete reponses[q.cle + "_precision"];
+    avancer(q, true, 0);
+  });
+
+  function attente(active) {
+    envoi_en_cours = active;
+    el("continuer").disabled = active;
+    el("continuer").style.opacity = active ? "0.85" : "";
+    el("icone_attente").classList.toggle("hidden", !active);
+    el("texte_continuer").textContent = active ? "Envoi en cours" : "Terminer";
+  }
+
+  /* Fiab: le dernier envoi est le seul qu'on attend, pour pouvoir afficher une erreur si le réseau coupe. Le prénom et le numéro n'y figurent que si la personne veut une démo. */
+  function terminer() {
+    if (envoi_en_cours) { return; }
+    attente(true);
+    etape_max = QUESTIONS.length;
+    var donnees = construire_envoi("fin", QUESTIONS[index], false);
+    donnees.veut_demo = besoin_contact();
+    donnees.prenom = contact.prenom;
+    donnees.telephone = contact.telephone;
+    envoyer_donnees(donnees)
+      .then(function () { envoye = true; sauvegarder(); preparer_fin(false); afficher("fin"); })
+      .catch(function () { montrer_erreur("L'envoi n'a pas marché. Vérifiez votre connexion et réessayez."); })
+      .then(function () { attente(false); });
+  }
+
+  /* Fiab: l'écran de fin change selon la dernière réponse. Le bouton de partage fait circuler l'étude avec la source "partage". */
+  function preparer_fin(deja_repondu) {
+    el("titre_fin").textContent = deja_repondu ? "Vous avez déjà répondu, merci !" : "Merci" + (contact.prenom ? " " + contact.prenom : "") + " !";
+    el("texte_fin").textContent = besoin_contact()
+      ? "Nous vous contacterons sur WhatsApp dès que le service sera prêt, pour une démo gratuite."
+      : "Vos réponses nous aident beaucoup à construire un service vraiment utile.";
+    var lien_etude = window.location.origin + window.location.pathname + "?source=partage";
+    var message_partage = "Je viens de répondre à une étude de 2 minutes sur la gestion des commerces au Bénin. Vous pouvez participer aussi : " + lien_etude;
+    el("lien_partage").href = "https://wa.me/?text=" + encodeURIComponent(message_partage);
+    el("nouveau").hidden = !mode_assiste;
+  }
+
+  /* Fiab: en mode assisté, chaque personne reçoit un nouvel identifiant. */
+  el("nouveau").addEventListener("click", function () {
+    id_repondant = creer_id();
+    reponses = {}; contact = { prenom: "", telephone: "" }; index = 0; etape_max = 0; debut = null; envoye = false;
+    el("prenom").value = ""; el("numero").value = ""; el("texte_libre").value = ""; el("texte_autre").value = "";
+    el("commencer").textContent = "Participer à l'étude";
+    afficher("accueil");
+  });
+
+  /* Fiab: le clic sur Participer envoie un événement "debut", une seule fois par identifiant. */
+  el("commencer").addEventListener("click", function () {
+    if (!debut) {
+      debut = Date.now();
+      sauvegarder();
+      envoyer_donnees(construire_envoi("debut", null, false)).catch(function () {});
+    }
+    afficher_question();
+  });
+
+  el("numero").addEventListener("input", function (e) { e.target.value = formater_numero(e.target.value); effacer_erreur(); });
+  el("prenom").addEventListener("input", effacer_erreur);
+  el("texte_libre").addEventListener("input", function () { effacer_erreur(); reponses[QUESTIONS[index].cle] = el("texte_libre").value; sauvegarder(); });
+  el("texte_autre").addEventListener("input", function () { effacer_erreur(); reponses[QUESTIONS[index].cle + "_precision"] = el("texte_autre").value; sauvegarder(); });
+
+  /* Fiab: au premier chargement, un identifiant est créé et gardé. Ensuite, on reprend là où la personne s'était arrêtée. */
+  (function demarrer() {
+    el("nb_questions").textContent = NB_QUESTIONS;
+    var m = lire_memoire();
+    if (!m || !m.id) {
+      id_repondant = creer_id();
+      sauvegarder();
+      return;
+    }
+    id_repondant = m.id;
+    reponses = m.reponses || {};
+    contact = m.contact || contact;
+    index = Math.min(m.index || 0, QUESTIONS.length - 1);
+    etape_max = m.etape_max || 0;
+    debut = m.debut || null;
+    envoye = !!m.envoye;
+    if (envoye) { preparer_fin(true); afficher("fin"); return; }
+    if (debut) {
+      el("commencer").textContent = QUESTIONS[index].type === "presentation" ? "Reprendre à la présentation" : "Reprendre à la question " + numero_question(index);
+    }
+  })();
+
+  console.log("Sondage FIAB prêt. Identifiant : " + id_repondant + " · source : " + source + (est_test ? " · MODE TEST" : ""));
+</script>
+</body>
+</html>
