@@ -45,7 +45,18 @@
         <li class="flex gap-2"><span class="text-couleurprimaire">•</span> <span id="nb_questions">10</span> questions, environ 2 minutes.</li>
         <li class="flex gap-2"><span class="text-couleurprimaire">•</span> Vos réponses restent anonymes. Si vous demandez une démo, elles servent seulement à préparer notre échange.</li>
       </ul>
-      <button id="commencer" type="button" class="bouton ombre mt-2 flex h-14 w-full items-center justify-center rounded-lg border border-couleurprimaire bg-couleurprimaire text-lg font-semibold text-white transition-transform">Participer à l'étude</button>
+      <div class="mt-2 flex flex-col gap-3 items-center">
+        <button id="commencer" type="button" class="bouton ombre flex h-14 w-full items-center justify-center rounded-lg border border-couleurprimaire bg-couleurprimaire text-lg font-semibold text-white transition-transform">Participer à l'étude</button>
+        <button id="refuser" type="button" class="bouton ombre flex h-8 w-1/2 items-center justify-center rounded-lg border border-couleursecondaire/20 bg-couleursecondaire/20 text-base font-semibold text-black/20 transition-transform">Je ne veux pas participer</button>
+      </div>
+    </section>
+
+    <!-- Fiab: l'écran affiché après un refus. La personne peut changer d'avis, et en mode assisté je passe à la personne suivante. -->
+    <section id="refus" class="etape flex flex-col gap-4" hidden>
+      <h2 class="text-[1.8rem] font-semibold leading-tight tracking-tight">Pas de souci, merci de votre temps.</h2>
+      <p class="text-base font-medium leading-snug text-couleursecondaire/75">Si vous changez d'avis, l'étude reste ouverte. Elle prend environ 2 minutes.</p>
+      <button id="changer_avis" type="button" class="bouton ombre flex h-14 w-full items-center justify-center rounded-lg border border-couleurprimaire bg-couleurprimaire text-lg font-semibold text-white transition-transform">Finalement, je participe</button>
+      <button id="nouveau_refus" type="button" class="bouton ombre flex h-14 w-full items-center justify-center rounded-lg border border-couleursecondaire bg-couleursecondaire text-base font-semibold text-white transition-transform" hidden>Remplir un nouveau questionnaire</button>
     </section>
 
     <!-- Fiab: une question à la fois. Les choix uniques passent tout seuls à la suite, les choix multiples, le texte libre et la présentation ont un bouton Continuer. -->
@@ -166,10 +177,10 @@
   var CHOIX_DEMO = "Oui, contactez-moi";
 
   /* Fiab: les étapes. type "un" = un seul choix, "plusieurs" = choix multiples, "libre" = texte, "presentation" = écran du produit (ce n'est pas une question), "fin" = dernière question avec le contact.
-     Les questions 1 à 7 portent sur les problèmes et passent avant la présentation, pour que le produit n'influence pas les réponses. */
+     colonnes: 2 affiche les choix sur deux colonnes. Les questions 1 à 7 portent sur les problèmes et passent avant la présentation. */
   var QUESTIONS = [
     { cle: "secteur", type: "un", texte: "Dans quel secteur travaillez-vous ?", choix: ["Commerce avec stock", "Vente en ligne", "Restauration", "École ou formation", "Services", "Livraison", "Autre"], autre: "Autre" },
-    { cle: "ville", type: "un", texte: "Dans quelle ville exercez-vous ?", choix: ["Parakou", "Cotonou", "Abomey-Calavi", "Porto-Novo", "Autre ville"], autre: "Autre ville" },
+    { cle: "ville", type: "un", colonnes: 2, texte: "Dans quelle ville exercez-vous ?", choix: ["Cotonou", "Abomey-Calavi", "Porto-Novo", "Lokossa", "Bohicon", "Dassa-Zoumé", "Parakou", "Djougou", "Natitingou", "Kandi", "Malanville", "Autre ville"], autre: "Autre ville" },
     { cle: "effectif", type: "un", texte: "Combien de personnes travaillent avec vous ?", choix: ["Je travaille seul", "2 à 5", "6 à 20", "Plus de 20"] },
     { cle: "taches_cahier", type: "plusieurs", texte: "Lesquelles de ces tâches gérez-vous de tête ou dans un cahier ?", aide: "Plusieurs choix possibles.", choix: TACHES.concat(["Aucune, tout est déjà noté ailleurs"]), seul: "Aucune, tout est déjà noté ailleurs" },
     { cle: "taches_temps", type: "plusieurs", max: 3, texte: "Quelles sont les 3 tâches qui vous prennent le plus de temps ?", aide: "3 choix maximum.", choix: TACHES },
@@ -189,6 +200,7 @@
   var etape_max = 0;
   var debut = null;
   var envoye = false;
+  var refuse = false;
   var envoi_en_cours = false;
   var verrou = false;
 
@@ -216,7 +228,7 @@
   function sauvegarder() {
     if (mode_assiste) { return; }
     try {
-      localStorage.setItem(CLE_MEMOIRE, JSON.stringify({ maj: Date.now(), id: id_repondant, reponses: reponses, contact: contact, index: index, etape_max: etape_max, debut: debut, envoye: envoye }));
+      localStorage.setItem(CLE_MEMOIRE, JSON.stringify({ maj: Date.now(), id: id_repondant, reponses: reponses, contact: contact, index: index, etape_max: etape_max, debut: debut, envoye: envoye, refuse: refuse }));
     } catch (erreur) {}
   }
 
@@ -230,7 +242,7 @@
   }
 
   function afficher(ecran) {
-    ["accueil", "ecran_question", "fin"].forEach(function (id) { el(id).hidden = id !== ecran; });
+    ["accueil", "refus", "ecran_question", "fin"].forEach(function (id) { el(id).hidden = id !== ecran; });
     var bloc = el(ecran);
     bloc.style.animation = "none"; void bloc.offsetWidth; bloc.style.animation = "";
     window.scrollTo(0, 0);
@@ -359,6 +371,7 @@
     effacer_erreur();
 
     var zone = el("choix");
+    zone.className = q.colonnes === 2 ? "grid grid-cols-2 gap-2" : "flex flex-col gap-2";
     zone.innerHTML = "";
     (q.choix || []).forEach(function (libelle) {
       var b = document.createElement("button");
@@ -505,24 +518,43 @@
     el("nouveau").hidden = !mode_assiste;
   }
 
-  /* Fiab: en mode assisté, chaque personne reçoit un nouvel identifiant. */
-  el("nouveau").addEventListener("click", function () {
-    id_repondant = creer_id();
-    reponses = {}; contact = { prenom: "", telephone: "" }; index = 0; etape_max = 0; debut = null; envoye = false;
-    el("prenom").value = ""; el("numero").value = ""; el("texte_libre").value = ""; el("texte_autre").value = "";
-    el("commencer").textContent = "Participer à l'étude";
-    afficher("accueil");
-  });
-
-  /* Fiab: le clic sur Participer envoie un événement "debut", une seule fois par identifiant. */
-  el("commencer").addEventListener("click", function () {
+  /* Fiab: démarrer l'étude, depuis l'accueil ou après un changement d'avis. L'événement "debut" part une seule fois par identifiant. */
+  function demarrer_etude() {
+    refuse = false;
     if (!debut) {
       debut = Date.now();
       sauvegarder();
       envoyer_donnees(construire_envoi("debut", null, false)).catch(function () {});
+    } else {
+      sauvegarder();
     }
     afficher_question();
+  }
+
+  /* Fiab: le refus envoie un POST "refus" avec l'identifiant anonyme. Il ne part qu'une fois, tant que la personne ne change pas d'avis. */
+  el("refuser").addEventListener("click", function () {
+    if (!refuse) {
+      refuse = true;
+      sauvegarder();
+      envoyer_donnees(construire_envoi("refus", null, false)).catch(function () {});
+    }
+    el("nouveau_refus").hidden = !mode_assiste;
+    afficher("refus");
   });
+
+  el("commencer").addEventListener("click", demarrer_etude);
+  el("changer_avis").addEventListener("click", demarrer_etude);
+
+  /* Fiab: en mode assisté, chaque personne reçoit un nouvel identifiant. */
+  function reinitialiser() {
+    id_repondant = creer_id();
+    reponses = {}; contact = { prenom: "", telephone: "" }; index = 0; etape_max = 0; debut = null; envoye = false; refuse = false;
+    el("prenom").value = ""; el("numero").value = ""; el("texte_libre").value = ""; el("texte_autre").value = "";
+    el("commencer").textContent = "Participer à l'étude";
+    afficher("accueil");
+  }
+  el("nouveau").addEventListener("click", reinitialiser);
+  el("nouveau_refus").addEventListener("click", reinitialiser);
 
   el("numero").addEventListener("input", function (e) { e.target.value = formater_numero(e.target.value); effacer_erreur(); });
   el("prenom").addEventListener("input", effacer_erreur);
@@ -545,7 +577,9 @@
     etape_max = m.etape_max || 0;
     debut = m.debut || null;
     envoye = !!m.envoye;
+    refuse = !!m.refuse;
     if (envoye) { preparer_fin(true); afficher("fin"); return; }
+    if (refuse) { el("nouveau_refus").hidden = !mode_assiste; afficher("refus"); return; }
     if (debut) {
       el("commencer").textContent = QUESTIONS[index].type === "presentation" ? "Reprendre à la présentation" : "Reprendre à la question " + numero_question(index);
     }
