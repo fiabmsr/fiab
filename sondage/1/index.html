@@ -9,7 +9,7 @@
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <link rel="icon" type="image/png" href="../favicon.png" />
 <script>
-  /* Fiab: mes couleurs officielles. Orange en couleur primaire, noir et blanc en couleurs secondaires. */
+  /* !fiab: mes couleurs officielles. Orange en couleur primaire, noir et blanc en couleurs secondaires. */
   tailwind.config = {
     theme: { extend: {
       colors: { couleurprimaire: "#ff5e00", couleursecondaire: "#0c0707" },
@@ -36,7 +36,7 @@
 <div class="flex min-h-[100dvh] flex-col px-6 pb-4 pt-6">
   <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-5">
 
-    <!-- Fiab: l'accueil dit clairement ce que je prépare et pourquoi je pose ces questions. -->
+    <!-- !fiab: l'accueil dit clairement ce que je prépare et pourquoi je pose ces questions. -->
     <section id="accueil" class="etape flex flex-col gap-4">
       <p class="text-xs font-semibold uppercase tracking-[0.2em] text-couleursecondaire/60">FIAB Web Identity · Étude 2026</p>
       <h1 class="text-[2rem] font-semibold leading-[1.1] tracking-tight">Gérez votre commerce <span class="text-couleurprimaire">sans quitter WhatsApp</span></h1>
@@ -51,7 +51,7 @@
       </div>
     </section>
 
-    <!-- Fiab: l'écran affiché après un refus. La personne peut changer d'avis, et en mode assisté je passe à la personne suivante. -->
+    <!-- !fiab: l'écran affiché après un refus. La personne peut changer d'avis, et en mode assisté je passe à la personne suivante. -->
     <section id="refus" class="etape flex flex-col gap-4" hidden>
       <h2 class="text-[1.8rem] font-semibold leading-tight tracking-tight">Pas de souci, merci de votre temps.</h2>
       <p class="text-base font-medium leading-snug text-couleursecondaire/75">Si vous changez d'avis, l'étude reste ouverte. Elle prend environ 2 minutes.</p>
@@ -59,7 +59,7 @@
       <button id="nouveau_refus" type="button" class="bouton ombre flex h-14 w-full items-center justify-center rounded-lg border border-couleursecondaire bg-couleursecondaire text-base font-semibold text-white transition-transform" hidden>Remplir un nouveau questionnaire</button>
     </section>
 
-    <!-- Fiab: une question à la fois. Les choix uniques passent tout seuls à la suite, les choix multiples, le texte libre et la présentation ont un bouton Continuer. -->
+    <!-- !fiab: une question à la fois. Les choix uniques passent tout seuls à la suite, les choix multiples, le texte libre et la présentation ont un bouton Continuer. -->
     <section id="ecran_question" class="etape flex flex-col gap-4" hidden>
       <div class="flex items-center justify-between gap-4">
         <button id="retour" type="button" class="lien shrink-0 text-sm font-semibold text-couleursecondaire/70 underline underline-offset-4">&larr; Retour</button>
@@ -73,7 +73,7 @@
         <p id="aide" class="mt-1 text-sm font-medium text-couleursecondaire/60"></p>
       </div>
 
-      <!-- Fiab: l'écran de présentation du produit. Il arrive après les questions sur les problèmes, pour ne pas les influencer, et avant l'utilité et le prix, pour que la personne sache de quoi on parle. -->
+      <!-- !fiab: l'écran de présentation du produit. Il arrive après les questions sur les problèmes, pour ne pas les influencer, et avant l'utilité et le prix, pour que la personne sache de quoi on parle. -->
       <div id="zone_presentation" class="flex flex-col gap-3" hidden>
         <div class="flex flex-col gap-2 rounded-lg bg-[#efeae2] p-3" role="img" aria-label="Exemple de conversation : le commerçant écrit sa vente, le service enregistre la vente, envoie le reçu et met à jour le stock.">
           <div class="ml-auto max-w-[85%] rounded-lg rounded-tr-none bg-[#d9fdd3] px-3 py-2 text-sm font-medium shadow-sm">vente 3 sacs de riz 45000 Awa</div>
@@ -104,7 +104,7 @@
         </div>
       </div>
 
-      <!-- Fiab: le contact n'apparaît qu'à la dernière question, et seulement si la personne veut une démo. -->
+      <!-- !fiab: le contact n'apparaît qu'à la dernière question, et seulement si la personne veut une démo. -->
       <div id="zone_contact" class="flex flex-col gap-3" hidden>
         <div class="flex flex-col gap-1.5">
           <label for="prenom" class="text-sm font-semibold">Votre prénom</label>
@@ -163,12 +163,12 @@
   });
 </script>
 <script>
-  /* Fiab: les réglages à vérifier avant la mise en ligne. */
+  /* !fiab: les réglages à vérifier avant la mise en ligne. */
   var URL_WEBHOOK = "https://automation.fiab.website/webhook/sondage";
-  /* Fiab: en test, rien n'est envoyé. Les données s'affichent dans la console. Repasser à false avant la mise en ligne. */
+  /* !fiab: en test, rien n'est envoyé. Les données s'affichent dans la console. Repasser à false avant la mise en ligne... */
   var est_test = false;
 
-  /* Fiab: la source se lit dans l'adresse. Un lien par canal : ?source=whatsapp, ?source=linkedin, ?source=groupes, ?source=statuts, ?source=assiste. */
+  /* !fiab: la source se lit dans l'adresse. Un lien par canal : ?source=whatsapp, ?source=linkedin, ?source=groupes, ?source=statuts, ?source=assiste. */
   var parametres = new URLSearchParams(window.location.search);
   var source = parametres.get("source") || parametres.get("utm_source") || "direct";
   var mode_assiste = source === "assiste";
@@ -176,7 +176,7 @@
   var TACHES = ["Ventes et caisse", "Stock", "Reçus et factures", "Dépenses et finances", "Dettes clients et relances", "Commandes des clients", "Fournisseurs", "Équipe"];
   var CHOIX_DEMO = "Oui, contactez-moi";
 
-  /* Fiab: les étapes. type "un" = un seul choix, "plusieurs" = choix multiples, "libre" = texte, "presentation" = écran du produit (ce n'est pas une question), "fin" = dernière question avec le contact.
+  /* !fiab: les étapes. type "un" = un seul choix, "plusieurs" = choix multiples, "libre" = texte, "presentation" = écran du produit (ce n'est pas une question), "fin" = dernière question avec le contact.
      colonnes: 2 affiche les choix sur deux colonnes. Les questions 1 à 7 portent sur les problèmes et passent avant la présentation. */
   var QUESTIONS = [
     { cle: "secteur", type: "un", texte: "Dans quel secteur travaillez-vous ?", choix: ["Commerce avec stock", "Vente en ligne", "Restauration", "École ou formation", "Services", "Livraison", "Autre"], autre: "Autre" },
@@ -203,17 +203,18 @@
   var refuse = false;
   var envoi_en_cours = false;
   var verrou = false;
+  var progression_envoyee = -1;
 
   var el = function (id) { return document.getElementById(id); };
 
-  /* Fiab: le numéro affiché à la personne ne compte pas l'écran de présentation. */
+  /* !fiab: le numéro affiché à la personne ne compte pas l'écran de présentation. */
   function numero_question(position) {
     var n = 0;
     for (var k = 0; k <= position; k++) { if (QUESTIONS[k].type !== "presentation") { n++; } }
     return n;
   }
 
-  /* Fiab: l'identifiant anonyme. Date et heure locales, plus 6 caractères au hasard. Exemple : 20261016-210437-k3f9qz. Il ne contient rien de personnel. */
+  /* !fiab: l'identifiant anonyme. Date et heure locales, plus 6 caractères au hasard. Exemple : 20261016-210437-k3f9qz. Il ne contient rien de personnel. */
   function creer_id() {
     var d = new Date();
     var deux = function (n) { return (n < 10 ? "0" : "") + n; };
@@ -221,7 +222,7 @@
     return d.getFullYear() + deux(d.getMonth() + 1) + deux(d.getDate()) + "-" + deux(d.getHours()) + deux(d.getMinutes()) + deux(d.getSeconds()) + "-" + hasard;
   }
 
-  /* Fiab: la mémoire du navigateur garde l'identifiant et les réponses 7 jours. En mode assisté, je remplis pour plusieurs personnes sur mon téléphone : pas de mémoire. */
+  /* !fiab: la mémoire du navigateur garde l'identifiant et les réponses 7 jours. En mode assisté, je remplis pour plusieurs personnes sur mon téléphone : pas de mémoire. */
   var CLE_MEMOIRE = "fiab_sondage_2026_v2";
   var DUREE_MEMOIRE = 7 * 24 * 60 * 60 * 1000;
 
@@ -257,7 +258,7 @@
 
   function besoin_contact() { return reponses.demo === CHOIX_DEMO; }
 
-  /* Fiab: un seul point d'envoi. En mode test (ou sans URL_WEBHOOK), pas de POST : on affiche les données dans la console. */
+  /* !fiab: un seul point d'envoi. En mode test (ou sans URL_WEBHOOK), pas de POST : on affiche les données dans la console. */
   function envoyer_donnees(donnees) {
     if (est_test || !URL_WEBHOOK) {
       console.log("Sondage (mode test) : " + donnees.evenement + " · étape " + donnees.etape_numero, donnees);
@@ -281,9 +282,9 @@
     });
   }
 
-  /* Fiab: le contenu de chaque POST. donnees_etape = la réponse de l'étape en cours. autres_donnees = toutes les autres réponses déjà données.
+  /* !fiab: le contenu de chaque POST. donnees_etape = la réponse de l'étape en cours. autres_donnees = toutes les autres réponses déjà données.
      Comme chaque envoi contient tout, un envoi perdu en route est rattrapé par le suivant. */
-  function construire_envoi(evenement, q, passe) {
+  function construire_envoi(evenement, q) {
     var donnees_etape = {};
     if (q) {
       donnees_etape[q.cle] = reponses[q.cle] === undefined ? null : reponses[q.cle];
@@ -299,7 +300,6 @@
       etape_cle: q ? q.cle : "accueil",
       etape_max: etape_max,
       total_etapes: QUESTIONS.length,
-      passe: !!passe,
       termine: evenement === "fin",
       donnees_etape: donnees_etape,
       autres_donnees: autres_donnees,
@@ -312,22 +312,33 @@
     };
   }
 
-  /* Fiab: les envois des étapes partent en arrière-plan. La personne n'attend jamais, et un échec ne la bloque pas. */
-  function envoyer_etape(q, passe) {
+  /* !fiab: à chaque question, je note seulement où en est la personne. Rien ne part sur le réseau à ce moment-là. */
+  function noter_progression() {
     etape_max = Math.max(etape_max, index + 1);
     sauvegarder();
-    envoyer_donnees(construire_envoi(passe ? "passe" : "etape", q, passe)).catch(function () {});
   }
 
-  /* Fiab: un verrou empêche un double appui de sauter une question. Il se relâche quand la question suivante s'affiche. */
-  function avancer(q, passe, delai) {
+  /* !fiab: la progression part quand la page passe en arrière-plan (WhatsApp, autre appli, onglet fermé). Un seul envoi par niveau atteint, et plus rien après la fin ou un refus. */
+  function envoyer_progression() {
+    if (!debut || envoye || refuse || envoi_en_cours) { return; }
+    if (etape_max === progression_envoyee) { return; }
+    progression_envoyee = etape_max;
+    envoyer_donnees(construire_envoi("pause", QUESTIONS[index])).catch(function () { progression_envoyee = -1; });
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") { envoyer_progression(); }
+  });
+  window.addEventListener("pagehide", envoyer_progression);
+
+  /* !fiab: un verrou empêche un double appui de sauter une question. Il se relâche quand la question suivante s'affiche. */
+  function avancer(delai) {
     if (verrou) { return; }
     verrou = true;
-    envoyer_etape(q, passe);
+    noter_progression();
     setTimeout(suivante, delai);
   }
 
-  /* Fiab: dessine les boutons de choix. Le choix sélectionné passe en noir, et les choix multiples ont une petite case orange. */
+  /* !fiab: dessine les boutons de choix. Le choix sélectionné passe en noir, et les choix multiples ont une petite case orange. */
   function peindre_choix(q) {
     var liste = reponses[q.cle];
     Array.prototype.forEach.call(el("choix").children, function (b) {
@@ -350,7 +361,7 @@
     if (q.max) { el("aide").textContent = q.aide + " " + (liste || []).length + " sur " + q.max + "."; }
   }
 
-  /* Fiab: le bouton Continuer n'apparaît que quand il sert : choix multiples, texte libre, présentation, champ Autre, dernière question. */
+  /* !fiab: le bouton Continuer n'apparaît que quand il sert : choix multiples, texte libre, présentation, champ Autre, dernière question. */
   function maj_bouton(q) {
     var autre_choisi = q.autre && reponses[q.cle] === q.autre;
     el("continuer").hidden = !(q.type === "plusieurs" || q.type === "libre" || q.type === "presentation" || q.type === "fin" || autre_choisi);
@@ -425,7 +436,7 @@
     el("zone_autre").hidden = true;
     delete reponses[q.cle + "_precision"];
     maj_bouton(q);
-    avancer(q, false, 220);
+    avancer(220);
   }
 
   function suivante() {
@@ -436,7 +447,7 @@
     var q = QUESTIONS[index];
     effacer_erreur();
 
-    if (q.type === "presentation") { reponses.presentation = "vue"; avancer(q, false, 0); return; }
+    if (q.type === "presentation") { reponses.presentation = "vue"; avancer(0); return; }
 
     if (q.type === "plusieurs" && !(reponses[q.cle] || []).length) { montrer_erreur("Choisissez au moins une réponse, ou appuyez sur Passer."); return; }
 
@@ -467,7 +478,7 @@
       return;
     }
 
-    avancer(q, false, 0);
+    avancer(0);
   });
 
   el("retour").addEventListener("click", function () {
@@ -480,7 +491,7 @@
     var q = QUESTIONS[index];
     delete reponses[q.cle];
     delete reponses[q.cle + "_precision"];
-    avancer(q, true, 0);
+    avancer(0);
   });
 
   function attente(active) {
@@ -491,12 +502,12 @@
     el("texte_continuer").textContent = active ? "Envoi en cours" : "Terminer";
   }
 
-  /* Fiab: le dernier envoi est le seul qu'on attend, pour pouvoir afficher une erreur si le réseau coupe. Le prénom et le numéro n'y figurent que si la personne veut une démo. */
+  /* !fiab: le dernier envoi est le seul qu'on attend, pour pouvoir afficher une erreur si le réseau coupe. Le prénom et le numéro n'y figurent que si la personne veut une démo. */
   function terminer() {
     if (envoi_en_cours) { return; }
     attente(true);
     etape_max = QUESTIONS.length;
-    var donnees = construire_envoi("fin", QUESTIONS[index], false);
+    var donnees = construire_envoi("fin", QUESTIONS[index]);
     donnees.veut_demo = besoin_contact();
     donnees.prenom = contact.prenom;
     donnees.telephone = contact.telephone;
@@ -506,7 +517,7 @@
       .then(function () { attente(false); });
   }
 
-  /* Fiab: l'écran de fin change selon la dernière réponse. Le bouton de partage fait circuler l'étude avec la source "partage". */
+  /* !fiab: l'écran de fin change selon la dernière réponse. Le bouton de partage fait circuler l'étude avec la source "partage". */
   function preparer_fin(deja_repondu) {
     el("titre_fin").textContent = deja_repondu ? "Vous avez déjà répondu, merci !" : "Merci" + (contact.prenom ? " " + contact.prenom : "") + " !";
     el("texte_fin").textContent = besoin_contact()
@@ -518,25 +529,20 @@
     el("nouveau").hidden = !mode_assiste;
   }
 
-  /* Fiab: démarrer l'étude, depuis l'accueil ou après un changement d'avis. L'événement "debut" part une seule fois par identifiant. */
+  /* !fiab: démarrer l'étude, depuis l'accueil ou après un changement d'avis. Rien ne part ici : le premier envoi se fait à la pause ou à la fin. */
   function demarrer_etude() {
     refuse = false;
-    if (!debut) {
-      debut = Date.now();
-      sauvegarder();
-      envoyer_donnees(construire_envoi("debut", null, false)).catch(function () {});
-    } else {
-      sauvegarder();
-    }
+    if (!debut) { debut = Date.now(); }
+    sauvegarder();
     afficher_question();
   }
 
-  /* Fiab: le refus envoie un POST "refus" avec l'identifiant anonyme. Il ne part qu'une fois, tant que la personne ne change pas d'avis. */
+  /* !fiab: le refus envoie un POST "refus" avec l'identifiant anonyme. Il ne part qu'une fois, tant que la personne ne change pas d'avis. */
   el("refuser").addEventListener("click", function () {
     if (!refuse) {
       refuse = true;
       sauvegarder();
-      envoyer_donnees(construire_envoi("refus", null, false)).catch(function () {});
+      envoyer_donnees(construire_envoi("refus", null)).catch(function () {});
     }
     el("nouveau_refus").hidden = !mode_assiste;
     afficher("refus");
@@ -545,10 +551,10 @@
   el("commencer").addEventListener("click", demarrer_etude);
   el("changer_avis").addEventListener("click", demarrer_etude);
 
-  /* Fiab: en mode assisté, chaque personne reçoit un nouvel identifiant. */
+  /* !fiab: en mode assisté, chaque personne reçoit un nouvel identifiant. */
   function reinitialiser() {
     id_repondant = creer_id();
-    reponses = {}; contact = { prenom: "", telephone: "" }; index = 0; etape_max = 0; debut = null; envoye = false; refuse = false;
+    reponses = {}; contact = { prenom: "", telephone: "" }; index = 0; etape_max = 0; debut = null; envoye = false; refuse = false; progression_envoyee = -1;
     el("prenom").value = ""; el("numero").value = ""; el("texte_libre").value = ""; el("texte_autre").value = "";
     el("commencer").textContent = "Participer à l'étude";
     afficher("accueil");
@@ -561,7 +567,7 @@
   el("texte_libre").addEventListener("input", function () { effacer_erreur(); reponses[QUESTIONS[index].cle] = el("texte_libre").value; sauvegarder(); });
   el("texte_autre").addEventListener("input", function () { effacer_erreur(); reponses[QUESTIONS[index].cle + "_precision"] = el("texte_autre").value; sauvegarder(); });
 
-  /* Fiab: au premier chargement, un identifiant est créé et gardé. Ensuite, on reprend là où la personne s'était arrêtée. */
+  /* !fiab: au premier chargement, un identifiant est créé et gardé. Ensuite, on reprend là où la personne s'était arrêtée. */
   (function demarrer() {
     el("nb_questions").textContent = NB_QUESTIONS;
     var m = lire_memoire();
