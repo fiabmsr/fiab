@@ -17,6 +17,10 @@
     } }
   };
 </script>
+
+<!-- !fiab : suivi analytique umami -->
+<script defer src="https://umami-ew1okuxhl3bln9gxpnfjbrfi.coolify.fiab.website/script.js" data-website-id="76a464a6-93ee-4cb6-b691-aa12cf6df081"></script>
+
 <style>
   /* Fiab: la page garde mon encre verte, mon orange et un papier chaud, mais le trait est devenu sobre. Un client m'a dit que l'ancienne version faisait penser à un public d'enfants : gros traits noirs, ombres dures, feutre et cahier ligné. Ici bordures fines, ombres douces, une seule police. */
   :root { --papier: #f6f2e9; --encre: #11231d; --orange: #e4401c; color-scheme: light; }
@@ -132,7 +136,7 @@
 
   <!-- Fiab: le pied de page garde les infos de confiance en bas de l'écran, sans faire défiler. Sur les écrans très courts la phrase sur les données disparaît pour ne pas créer de défilement. -->
   <footer class="mx-auto mt-4 w-full max-w-md border-t border-couleurprimaire/15 pt-3 text-xs font-semibold text-couleurprimaire/70">
-    <div class="flex items-center justify-between gap-3"><span class="font-semibold text-couleurprimaire">FIAB Web Identity</span><span>Parakou, Bénin</span></div>
+    <div class="flex items-center justify-between gap-3"><span class="font-semibold text-couleursecondaire" onclick="window.location.href='https://fiab.website'">FIAB Web Identity</span><span>Parakou, Bénin</span></div>
     <p class="mt-1 hidden leading-snug [@media(min-height:700px)]:block">Ton numéro sert uniquement à te contacter pour la démo.</p>
     <p class="mt-1">© 2026 FIAB Web Identity</p>
   </footer>
