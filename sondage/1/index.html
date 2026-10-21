@@ -33,7 +33,20 @@
   [hidden] { display: none !important; }
   .etape { animation: entree 0.3s ease-out both; }
   @keyframes entree { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .etape { animation: none; } .animate-spin { animation: none; } }
+
+  /* !fiab: la conversation de présentation. Hauteur fixe pour que le bouton Continuer reste toujours visible. */
+  .fil { height: clamp(260px, 46dvh, 400px); scrollbar-width: none; }
+  .fil::-webkit-scrollbar { display: none; }
+  .bulle { animation: bulle 0.25s ease-out both; }
+  @keyframes bulle { from { opacity: 0; transform: translateY(6px) scale(0.98); } to { opacity: 1; transform: none; } }
+  .point { width: 6px; height: 6px; border-radius: 9999px; background: rgba(12,7,7,0.4); animation: point 1s infinite ease-in-out; }
+  .point:nth-child(2) { animation-delay: 0.15s; }
+  .point:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes point { 0%, 60%, 100% { transform: none; opacity: 0.4; } 30% { transform: translateY(-3px); opacity: 1; } }
+  .attirer { animation: attirer 1.6s ease-in-out 2; }
+  @keyframes attirer { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,94,0,0.45); } 50% { box-shadow: 0 0 0 10px rgba(255,94,0,0); } }
+
+  @media (prefers-reduced-motion: reduce) { .etape, .bulle, .point, .attirer { animation: none; } .animate-spin { animation: none; } }
 </style>
 </head>
 <body class="selection:bg-couleurprimaire selection:text-white">
@@ -77,20 +90,18 @@
         <p id="aide" class="mt-1 text-sm font-medium text-couleursecondaire/60"></p>
       </div>
 
-      <!-- !fiab: l'écran de présentation du produit. Il arrive après les questions sur les problèmes, pour ne pas les influencer, et avant l'utilité et le prix, pour que la personne sache de quoi on parle. -->
-      <div id="zone_presentation" class="flex flex-col gap-3" hidden>
-        <div class="flex flex-col gap-2 rounded-lg bg-[#efeae2] p-3" role="img" aria-label="Exemple de conversation : le commerçant écrit sa vente, le service enregistre la vente, envoie le reçu et met à jour le stock.">
-          <div class="ml-auto max-w-[85%] rounded-lg rounded-tr-none bg-[#d9fdd3] px-3 py-2 text-sm font-medium shadow-sm">vente 3 sacs de riz 45000 Awa</div>
-          <div class="mr-auto max-w-[85%] rounded-lg rounded-tl-none bg-white px-3 py-2 text-sm leading-snug shadow-sm"><span class="font-semibold">✓ Vente enregistrée : 45 000 F</span><br>Reçu envoyé à Awa<br>Stock riz : 12 sacs restants</div>
-          <div class="ml-auto max-w-[85%] rounded-lg rounded-tr-none bg-[#d9fdd3] px-3 py-2 text-sm font-medium shadow-sm">bilan</div>
-          <div class="mr-auto max-w-[85%] rounded-lg rounded-tl-none bg-white px-3 py-2 text-sm leading-snug shadow-sm"><span class="font-semibold">Aujourd'hui : 9 ventes, 186 500 F</span><br>Dépenses : 22 000 F<br>Dettes clients à relancer : 3</div>
+      <!-- !fiab: l'écran de présentation du produit. Il arrive après les questions sur les problèmes, pour ne pas les influencer, et avant l'utilité et le prix, pour que la personne sache de quoi on parle.
+           C'est une conversation WhatsApp qui se déroule, adaptée au secteur choisi à la question 1. Hauteur fixe : le bouton Continuer reste toujours visible. -->
+      <div id="zone_presentation" class="ombre overflow-hidden rounded-xl border border-couleursecondaire/10" hidden>
+        <div class="flex items-center gap-3 border-b border-couleursecondaire/10 bg-white px-3 py-2.5">
+          <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-couleurprimaire text-sm font-bold text-white">F</div>
+          <div class="min-w-0 flex-1 leading-tight">
+            <p class="truncate text-sm font-semibold">Votre assistant de gestion</p>
+            <p id="statut_chat" class="text-xs text-couleursecondaire/55">en ligne</p>
+          </div>
+          <button id="revoir" type="button" class="lien shrink-0 text-xs font-semibold text-couleursecondaire/60 underline underline-offset-4" hidden>↻ Revoir</button>
         </div>
-        <ul class="flex flex-col gap-2">
-          <li class="ombre flex gap-3 rounded-lg border border-couleursecondaire/15 bg-white px-4 py-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-couleurprimaire"></span><div><p class="text-sm font-semibold">Ventes et reçus</p><p class="text-sm text-couleursecondaire/70">Un message suffit : la vente est notée et le reçu part au client.</p></div></li>
-          <li class="ombre flex gap-3 rounded-lg border border-couleursecondaire/15 bg-white px-4 py-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-couleurprimaire"></span><div><p class="text-sm font-semibold">Stock</p><p class="text-sm text-couleursecondaire/70">Toujours à jour, avec une alerte quand un produit va manquer.</p></div></li>
-          <li class="ombre flex gap-3 rounded-lg border border-couleursecondaire/15 bg-white px-4 py-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-couleurprimaire"></span><div><p class="text-sm font-semibold">Finances</p><p class="text-sm text-couleursecondaire/70">Recettes, dépenses, dettes clients et bilan du jour, reçu chaque soir.</p></div></li>
-          <li class="ombre flex gap-3 rounded-lg border border-couleursecondaire/15 bg-white px-4 py-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-couleurprimaire"></span><div><p class="text-sm font-semibold">Gestion business</p><p class="text-sm text-couleursecondaire/70">Vous gérez votre activité sans quitté WhatsApp.</p></div></li>
-        </ul>
+        <div id="fil_presentation" class="fil flex flex-col gap-1.5 overflow-y-auto bg-[#efeae2] p-3" role="log" aria-label="Exemple de conversation avec le service"></div>
       </div>
 
       <div id="choix" class="flex flex-col gap-2"></div>
@@ -170,7 +181,7 @@
   /* !fiab: les réglages à vérifier avant la mise en ligne. */
   var URL_WEBHOOK = "https://automation.fiab.website/webhook/sondage";
   /* !fiab: en test, rien n'est envoyé. Les données s'affichent dans la console. Repasser à false avant la mise en ligne... */
-  var est_test = false;
+  var est_test = true;
 
   /* !fiab: la source se lit dans l'adresse. Un lien par canal : ?source=whatsapp, ?source=linkedin, ?source=groupes, ?source=statuts, ?source=assiste. */
   var parametres = new URLSearchParams(window.location.search);
@@ -181,7 +192,8 @@
   var CHOIX_DEMO = "Oui, contactez-moi";
 
   /* !fiab: les étapes. type "un" = un seul choix, "plusieurs" = choix multiples, "libre" = texte, "presentation" = écran du produit (ce n'est pas une question), "fin" = dernière question avec le contact.
-     colonnes: 2 affiche les choix sur deux colonnes. Les questions 1 à 7 portent sur les problèmes et passent avant la présentation. */
+     colonnes: 2 affiche les choix sur deux colonnes. Les questions 1 à 7 portent sur les problèmes et passent avant la présentation.
+     Le titre de la présentation vient du scénario du secteur (voir SCENARIOS). Le texte ici sert seulement de secours. */
   var QUESTIONS = [
     { cle: "secteur", type: "un", texte: "Dans quel secteur travaillez-vous ?", choix: ["Commerce avec stock", "Vente en ligne", "Restauration", "École ou formation", "Services", "Livraison", "Autre"], autre: "Autre" },
     { cle: "ville", type: "un", colonnes: 2, texte: "Dans quelle ville exercez-vous ?", choix: ["Cotonou", "Abomey-Calavi", "Porto-Novo", "Lokossa", "Bohicon", "Dassa-Zoumé", "Parakou", "Djougou", "Natitingou", "Kandi", "Malanville", "Autre ville"], autre: "Autre ville" },
@@ -190,9 +202,9 @@
     { cle: "taches_temps", type: "plusieurs", max: 3, texte: "Quelles sont les 3 tâches qui vous prennent le plus de temps ?", aide: "3 choix maximum.", choix: TACHES },
     { cle: "tache_pertes", type: "un", texte: "Laquelle vous fait perdre le plus d'argent ou cause le plus d'erreurs ?", choix: TACHES },
     { cle: "probleme", type: "libre", texte: "Si un seul problème de votre gestion pouvait disparaître demain, lequel choisiriez-vous ?", aide: "Écrivez avec vos mots, pas besoin de faire long." },
-    { cle: "presentation", type: "presentation", texte: "Voici le service que nous préparons", aide: "Tout se passe dans WhatsApp, sans installer d'application." },
+    { cle: "presentation", type: "presentation", texte: "Vous écrivez votre vente. Le reste se fait tout seul.", aide: "Dans WhatsApp, sans application à installer." },
     { cle: "utilite", type: "un", texte: "Ce service vous serait-il utile pour votre activité ?", choix: ["Très utile", "Plutôt utile", "Peu utile", "Pas utile"] },
-    { cle: "budget", type: "un", texte: "Pour ce service, combien seriez-vous prêt à payer par mois ?", aide: "Ventes, reçus, stock, finances et dettes clients, le tout dans WhatsApp.", choix: ["0 F", "Moins de 5 000 F", "5 000 à 10 000 F", "10 000 à 20 000 F", "20 000 à 35 000 F", "Plus de 35 000 F"] },
+    { cle: "budget", type: "un", texte: "Pour ce service, combien seriez-vous prêt à payer par mois ?", aide: "Pour le service que vous venez de voir.", choix: ["0 F", "Moins de 5 000 F", "5 000 à 10 000 F", "10 000 à 20 000 F", "20 000 à 35 000 F", "Plus de 35 000 F"] },
     { cle: "demo", type: "fin", texte: "Quand le service sera prêt, souhaitez-vous qu'on vous contacte pour une démo gratuite ?", choix: [CHOIX_DEMO, "Non merci"] }
   ];
   var NB_QUESTIONS = QUESTIONS.filter(function (q) { return q.type !== "presentation"; }).length;
@@ -372,13 +384,167 @@
     el("texte_continuer").textContent = q.type === "fin" ? "Terminer" : "Continuer";
   }
 
+  /* !fiab: un scénario de présentation par secteur. On lit seulement reponses.secteur (question 1), on n'écrit rien : les envois ne changent pas.
+     "Autre", une question passée ou un secteur inconnu retombent sur le scénario commerce.
+     de: "moi" = le commerçant, "bot" = le service, "info" = une étiquette au milieu (changement de moment). */
+  var SCENARIOS = {
+    "Commerce avec stock": { titre_ecran: "Vous écrivez votre vente. Le reste se fait tout seul.", messages: [
+      { de: "moi", texte: "vente 3 sacs de riz 45000 Awa", heure: "09:12" },
+      { de: "bot", titre: "✓ Vente enregistrée : 45 000 F", texte: "Reçu envoyé à Awa\nStock riz : 12 sacs restants", heure: "09:12" },
+      { de: "moi", texte: "Koffi a pris 2 bidons d'huile, il paie samedi", heure: "12:40" },
+      { de: "bot", titre: "✓ Noté : Koffi vous doit 15 000 F", texte: "Je vous le rappelle samedi matin.", heure: "12:40" },
+      { de: "bot", titre: "⚠️ Plus que 4 cartons de lait", texte: "Au rythme actuel, il vous en reste pour 2 jours.", heure: "15:05" },
+      { de: "info", texte: "Le soir" },
+      { de: "moi", texte: "bilan", heure: "20:31" },
+      { de: "bot", titre: "Aujourd'hui : 9 ventes, 186 500 F", texte: "Dépenses : 22 000 F\nReste en caisse : 164 500 F\n3 clients à relancer", heure: "20:31" }
+    ] },
+    "Vente en ligne": { titre_ecran: "Vous écrivez la commande. Le reste se fait tout seul.", messages: [
+      { de: "moi", texte: "commande Bénédicte 2 robes wax 18000, livraison demain", heure: "10:05" },
+      { de: "bot", titre: "✓ Commande enregistrée : 18 000 F", texte: "Reçu envoyé à Bénédicte\nStock robes wax : 5 restantes", heure: "10:05" },
+      { de: "moi", texte: "Bénédicte a payé par MoMo", heure: "11:20" },
+      { de: "bot", titre: "✓ Paiement reçu : 18 000 F", texte: "La commande est prête à livrer.", heure: "11:20" },
+      { de: "bot", titre: "⚠️ 3 commandes pas encore livrées", texte: "La plus ancienne date d'hier.", heure: "16:10" },
+      { de: "info", texte: "Le soir" },
+      { de: "moi", texte: "bilan", heure: "21:02" },
+      { de: "bot", titre: "Aujourd'hui : 7 commandes, 126 000 F", texte: "Déjà payé : 98 000 F\nÀ encaisser à la livraison : 28 000 F", heure: "21:02" }
+    ] },
+    "Restauration": { titre_ecran: "Vous écrivez la commande. Le reste se fait tout seul.", messages: [
+      { de: "moi", texte: "dépense marché 35000 tomates oignons piment", heure: "07:30" },
+      { de: "bot", titre: "✓ Dépense notée : 35 000 F", texte: "Catégorie : ingrédients", heure: "07:30" },
+      { de: "moi", texte: "table 4 : 3 riz poulet, 2 sodas 7500", heure: "12:15" },
+      { de: "bot", titre: "✓ Vente enregistrée : 7 500 F", texte: "Poulet : 6 portions restantes", heure: "12:15" },
+      { de: "bot", titre: "⚠️ Plus que 6 portions de poulet", texte: "Au rythme de ce midi, il n'en restera plus vers 14 h.", heure: "12:50" },
+      { de: "info", texte: "Le soir" },
+      { de: "moi", texte: "bilan", heure: "21:10" },
+      { de: "bot", titre: "Aujourd'hui : 64 plats, 152 000 F", texte: "Dépenses : 35 000 F\nReste en caisse : 117 000 F\nPlat le plus vendu : riz poulet", heure: "21:10" }
+    ] },
+    "École ou formation": { titre_ecran: "Vous écrivez le paiement. Le reste se fait tout seul.", messages: [
+      { de: "moi", texte: "Kossi a payé 25000 pour la scolarité, CM1", heure: "08:15" },
+      { de: "bot", titre: "✓ Paiement enregistré : 25 000 F", texte: "Reçu envoyé au parent de Kossi\nReste à payer : 15 000 F", heure: "08:15" },
+      { de: "moi", texte: "qui n'a pas encore payé en CM1 ?", heure: "10:40" },
+      { de: "bot", titre: "6 élèves en retard en CM1", texte: "Total dû : 120 000 F\nJe relance les parents ?", heure: "10:40" },
+      { de: "moi", texte: "oui", heure: "10:41" },
+      { de: "bot", titre: "✓ Rappel envoyé aux 6 parents", texte: "Je vous préviens dès qu'un paiement arrive.", heure: "10:41" },
+      { de: "info", texte: "Fin du mois" },
+      { de: "moi", texte: "bilan", heure: "18:30" },
+      { de: "bot", titre: "Ce mois : 2 450 000 F encaissés", texte: "Dépenses : 1 100 000 F\nReste à encaisser : 380 000 F", heure: "18:30" }
+    ] },
+    "Services": { titre_ecran: "Vous écrivez la commande. Le reste se fait tout seul.", messages: [
+      { de: "moi", texte: "Mme Adjovi, tenue de mariage 35000, avance 15000, pour samedi", heure: "09:40" },
+      { de: "bot", titre: "✓ Commande notée : 35 000 F", texte: "Avance reçue : 15 000 F\nReste à payer : 20 000 F", heure: "09:40" },
+      { de: "moi", texte: "dépense tissu et fil 12000", heure: "11:05" },
+      { de: "bot", titre: "✓ Dépense notée : 12 000 F", texte: "Catégorie : fournitures", heure: "11:05" },
+      { de: "bot", titre: "⚠️ 2 tenues à livrer demain", texte: "Dont celle de M. Houngbo, 10 000 F encore à payer.", heure: "17:00" },
+      { de: "info", texte: "Le soir" },
+      { de: "moi", texte: "bilan", heure: "20:45" },
+      { de: "bot", titre: "Aujourd'hui : 4 clients, 52 000 F encaissés", texte: "Dépenses : 12 000 F\nRestes à payer clients : 65 000 F", heure: "20:45" }
+    ] },
+    "Livraison": { titre_ecran: "Vous écrivez la course. Le reste se fait tout seul.", messages: [
+      { de: "moi", texte: "course colis Mme Sika 1500", heure: "08:50" },
+      { de: "bot", titre: "✓ Course enregistrée : 1 500 F", texte: "Reçu envoyé à Mme Sika", heure: "08:50" },
+      { de: "moi", texte: "carburant 5000", heure: "10:15" },
+      { de: "bot", titre: "✓ Dépense notée : 5 000 F", texte: "Catégorie : carburant", heure: "10:15" },
+      { de: "bot", titre: "⚠️ Boutique Élégance vous doit 5 courses", texte: "Total : 7 500 F, impayé depuis lundi.", heure: "14:30" },
+      { de: "info", texte: "Le soir" },
+      { de: "moi", texte: "bilan", heure: "20:20" },
+      { de: "bot", titre: "Aujourd'hui : 14 courses, 23 500 F", texte: "Carburant : 5 000 F\nReste : 18 500 F\n2 clients à relancer", heure: "20:20" }
+    ] }
+  };
+
+  function scenario_actuel() { return SCENARIOS[reponses.secteur] || SCENARIOS["Commerce avec stock"]; }
+
+  /* !fiab: un jeton par lecture. Quand on quitte l'écran ou qu'on relance, le jeton change et l'ancienne lecture s'arrête d'elle-même. */
+  var lecture = 0;
+  function plus_tard(jeton, ms, fn) { setTimeout(function () { if (jeton === lecture) { fn(); } }, ms); }
+
+  function arreter_presentation() {
+    lecture++;
+    el("continuer").classList.remove("attirer");
+  }
+
+  function descendre(instant) {
+    var fil = el("fil_presentation");
+    fil.scrollTo({ top: fil.scrollHeight, behavior: instant ? "auto" : "smooth" });
+  }
+
+  /* !fiab: dessine une bulle. Tout passe par textContent, jamais de HTML injecté depuis les scénarios. */
+  function bulle(m) {
+    var b = document.createElement("div");
+    if (m.de === "info") {
+      b.className = "bulle mx-auto my-1 rounded-md bg-white/85 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-couleursecondaire/60 shadow-sm";
+      b.textContent = m.texte;
+    } else {
+      var moi = m.de === "moi";
+      b.className = "bulle max-w-[85%] rounded-lg px-2.5 pb-1 pt-1.5 text-sm leading-snug shadow-sm " + (moi ? "ml-auto rounded-tr-none bg-[#d9fdd3]" : "mr-auto rounded-tl-none bg-white");
+      if (m.titre) { var t = document.createElement("p"); t.className = "font-semibold"; t.textContent = m.titre; b.appendChild(t); }
+      if (m.texte) { var p = document.createElement("p"); p.className = "whitespace-pre-line" + (moi ? " font-medium" : ""); p.textContent = m.texte; b.appendChild(p); }
+      var h = document.createElement("p");
+      h.className = "mt-0.5 text-right text-[10px] text-couleursecondaire/45";
+      h.textContent = m.heure;
+      if (moi) { var vu = document.createElement("span"); vu.className = "ml-1 text-[#53bdeb]"; vu.textContent = "✓✓"; h.appendChild(vu); }
+      b.appendChild(h);
+    }
+    el("fil_presentation").appendChild(b);
+  }
+
+  function indicateur_ecrit() {
+    var b = document.createElement("div");
+    b.className = "bulle mr-auto flex gap-1 rounded-lg rounded-tl-none bg-white px-3 py-3 shadow-sm";
+    b.innerHTML = '<span class="point"></span><span class="point"></span><span class="point"></span>';
+    el("fil_presentation").appendChild(b);
+    el("statut_chat").textContent = "écrit…";
+    return b;
+  }
+
+  function finir_presentation() {
+    el("statut_chat").textContent = "en ligne";
+    el("revoir").hidden = false;
+    void el("continuer").offsetWidth;
+    el("continuer").classList.add("attirer");
+  }
+
+  function jouer_presentation() {
+    var jeton = ++lecture;
+    var conv = scenario_actuel().messages;
+    el("fil_presentation").innerHTML = "";
+    el("revoir").hidden = true;
+    el("statut_chat").textContent = "en ligne";
+    el("continuer").classList.remove("attirer");
+
+    /* !fiab: si le téléphone demande moins d'animations, toute la conversation s'affiche d'un coup. */
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      conv.forEach(bulle); descendre(true); finir_presentation(); return;
+    }
+
+    var i = 0;
+    function etape() {
+      if (i >= conv.length) { finir_presentation(); return; }
+      var m = conv[i++];
+      if (m.de === "bot") {
+        plus_tard(jeton, 350, function () {
+          var indic = indicateur_ecrit(); descendre();
+          plus_tard(jeton, 1100, function () {
+            indic.remove(); el("statut_chat").textContent = "en ligne";
+            bulle(m); descendre(); etape();
+          });
+        });
+      } else {
+        plus_tard(jeton, m.de === "info" ? 600 : 900, function () { bulle(m); descendre(); etape(); });
+      }
+    }
+    plus_tard(jeton, 400, etape);
+  }
+
+  el("revoir").addEventListener("click", function () { jouer_presentation(); });
+
   function afficher_question() {
     var q = QUESTIONS[index];
     verrou = false;
+    arreter_presentation();
     var est_presentation = q.type === "presentation";
     el("compteur").textContent = est_presentation ? "Présentation" : "Question " + numero_question(index) + " sur " + NB_QUESTIONS;
     el("progression").style.width = ((index + 1) / QUESTIONS.length * 100) + "%";
-    el("question").textContent = q.texte;
+    el("question").textContent = est_presentation ? scenario_actuel().titre_ecran : q.texte;
     el("aide").textContent = q.aide || "";
     el("aide").hidden = !q.aide;
     el("passer").hidden = q.type === "fin" || est_presentation;
@@ -407,6 +573,7 @@
     el("zone_contact").hidden = !(q.type === "fin" && besoin_contact());
     maj_bouton(q);
     afficher("ecran_question");
+    if (est_presentation) { jouer_presentation(); }
   }
 
   function choisir(q, libelle) {
