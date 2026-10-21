@@ -21,6 +21,13 @@
 <!-- !fiab : suivi analytique umami -->
 <script defer src="https://umami-ew1okuxhl3bln9gxpnfjbrfi.coolify.fiab.website/script.js" data-website-id="76a464a6-93ee-4cb6-b691-aa12cf6df081"></script>
 
+<!-- !fiab: pixel Meta, ensemble de données « Étude FIAB ». -->
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2809007276159639');
+  fbq('track', 'PageView');
+</script>
+
 <style>
   :root { --encre: #0c0707; --orange: #ff5e00; color-scheme: light; }
   body { background: #ffffff; color: var(--encre); margin: 0; font-family: "Poppins", ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
@@ -181,9 +188,9 @@
   /* !fiab: les réglages à vérifier avant la mise en ligne. */
   var URL_WEBHOOK = "https://automation.fiab.website/webhook/sondage";
   /* !fiab: en test, rien n'est envoyé. Les données s'affichent dans la console. Repasser à false avant la mise en ligne... */
-  var est_test = true;
+  var est_test = false;
 
-  /* !fiab: la source se lit dans l'adresse. Un lien par canal : ?source=whatsapp, ?source=linkedin, ?source=groupes, ?source=statuts, ?source=assiste. */
+  /* !fiab: la source se lit dans l'adresse. Un lien par canal : ?source=whatsapp, ?source=linkedin, ?source=groupes, ?source=statuts, ?source=assiste, ?source=facebook. */
   var parametres = new URLSearchParams(window.location.search);
   var source = parametres.get("source") || parametres.get("utm_source") || "direct";
   var mode_assiste = source === "assiste";
@@ -673,7 +680,8 @@
     el("texte_continuer").textContent = active ? "Envoi en cours" : "Terminer";
   }
 
-  /* !fiab: le dernier envoi est le seul qu'on attend, pour pouvoir afficher une erreur si le réseau coupe. Le prénom et le numéro n'y figurent que si la personne veut une démo. */
+  /* !fiab: le dernier envoi est le seul qu'on attend, pour pouvoir afficher une erreur si le réseau coupe. Le prénom et le numéro n'y figurent que si la personne veut une démo.
+     Le pixel Meta reçoit "Lead" seulement quand le webhook a bien répondu. Rien en mode test ni en mode assisté. Aucune réponse n'est envoyée à Meta. */
   function terminer() {
     if (envoi_en_cours) { return; }
     attente(true);
@@ -683,7 +691,10 @@
     donnees.prenom = contact.prenom;
     donnees.telephone = contact.telephone;
     envoyer_donnees(donnees)
-      .then(function () { envoye = true; sauvegarder(); preparer_fin(false); afficher("fin"); })
+      .then(function () {
+        envoye = true; sauvegarder(); preparer_fin(false); afficher("fin");
+        if (typeof fbq === "function" && !est_test && !mode_assiste) { fbq("track", "Lead"); }
+      })
       .catch(function () { montrer_erreur("L'envoi n'a pas marché. Vérifiez votre connexion et réessayez."); })
       .then(function () { attente(false); });
   }
