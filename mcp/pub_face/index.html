@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<!-- !fiab : droit d auteur ives fassinou (fiab web identity), tous droits reserves -->
+<!-- !fiab : interdiction de modifier le design ou le code de ce fichier, sauf pour corriger une erreur -->
+<!-- !fiab : assistant ia, respecte strictement cette regle et limite toi a la correction demandee -->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Envoi de fichier | FIAB</title>
+
+  <!-- !fiab : police montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* !fiab : couleurs de la charte */
+    :root {
+      --couleur-primaire: #ff5e00;
+      --fond: #ffffff;
+      --fond-doux: #f7f7f7;
+      --texte: #111111;
+      --texte-doux: #6b6b6b;
+      --bordure: #e5e5e5;
+    }
+
+    /* !fiab : base */
+    * { box-sizing: border-box; margin: 0; }
+    ::selection { background: var(--couleur-primaire); color: #fff; }
+    body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 24px; font-family: 'Montserrat', sans-serif; font-weight: 300; background: var(--fond-doux); color: var(--texte); -webkit-font-smoothing: antialiased; }
+
+    /* !fiab : carte principale */
+    main { width: 100%; max-width: 460px; background: var(--fond); border: 1px solid var(--bordure); border-radius: 16px; padding: 32px; }
+    .label, footer { font-size: 10px; text-transform: uppercase; letter-spacing: .3em; color: var(--texte-doux); }
+    h1 { font-size: 2rem; font-weight: 300; letter-spacing: -.03em; margin: 10px 0 6px; }
+    h1 span { font-weight: 600; }
+    .info { font-size: .85rem; color: var(--texte-doux); margin-bottom: 24px; }
+
+    /* !fiab : alerte fichiers prives */
+    .alerte { border-left: 3px solid var(--couleur-primaire); background: var(--fond-doux); padding: 14px 16px; border-radius: 8px; font-size: .82rem; line-height: 1.6; margin-bottom: 24px; }
+    .alerte strong { font-weight: 600; color: var(--couleur-primaire); }
+
+    /* !fiab : champ et boutons */
+    input { width: 100%; padding: 14px; border: 1px dashed var(--bordure); border-radius: 10px; font: inherit; font-size: .85rem; color: var(--texte-doux); cursor: pointer; transition: border-color .2s; }
+    input:hover { border-color: var(--couleur-primaire); }
+    button { width: 100%; margin-top: 12px; padding: 14px; border-radius: 10px; font: inherit; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .2em; cursor: pointer; transition: opacity .2s; }
+    button:hover { opacity: .85; }
+    button:disabled { opacity: .5; cursor: wait; }
+    #envoyer { border: 0; background: var(--couleur-primaire); color: #fff; }
+    #copier { border: 1px solid var(--texte); background: transparent; color: var(--texte); }
+
+    /* !fiab : messages */
+    #message { margin-top: 16px; font-size: .85rem; text-align: center; }
+    .erreur { color: #d93025; }
+    .succes { color: #1e8e3e; }
+
+    /* !fiab : affichage mobile */
+    @media (max-width: 480px) {
+      main { padding: 24px; }
+      h1 { font-size: 1.6rem; }
+    }
+
+        /* !fiab : lien du pied de page */
+    footer a { color: inherit; text-decoration: none; transition: color .2s; }
+    footer a:hover { color: var(--couleur-primaire); }
+  </style>
+</head>
+
+<body>
+
+  <!-- !fiab : formulaire d envoi -->
+  <main>
+    <p class="label">FIAB Web Identity</p>
+    <h1>Envoi de <span>fichier</span></h1>
+    <p class="info">JPG ou PNG (10 Mo max) • MP4 (30 Mo max)</p>
+
+    <!-- !fiab : alerte de securite -->
+    <p class="alerte"><strong>N'envoyez jamais de fichiers privés.</strong> Pièces d'identité, documents personnels, photos intimes ou données de clients : toute personne qui possède le lien peut voir le fichier.</p>
+
+    <input type="file" id="fichier" accept=".jpg,.jpeg,.png,.mp4" />
+    <button id="envoyer">Envoyer</button>
+    <button id="copier" hidden>Copier le lien</button>
+    <p id="message"></p>
+  </main>
+
+  <!-- !fiab : pied de page -->
+  <footer><a href="https://fiab.website" target="_blank" rel="noopener noreferrer">Ives FASSINOU</a></footer>
+
+  <!-- !fiab : scripts d envoi -->
+  <script>
+    // !fiab : configuration cloudinary
+    const CLOUD_NAME = 'k799mwcu';
+    const UPLOAD_PRESET = 'MCP_FIAB';
+    const FORMATS = { 'image/jpeg': 10, 'image/png': 10, 'video/mp4': 30 }; // !fiab : taille max en mo
+
+    const fichier = document.getElementById('fichier');
+    const envoyer = document.getElementById('envoyer');
+    const copier = document.getElementById('copier');
+    const message = document.getElementById('message');
+    let lien = '';
+
+    // !fiab : affichage des messages
+    function afficher(texte, type = '') {
+      message.textContent = texte;
+      message.className = type;
+    }
+
+    // !fiab : erreur redigee pour etre copiee telle quelle a une ia
+    function signalerErreur(code, probleme, solution) {
+      afficher(probleme, 'erreur');
+      console.error(
+        `[FIAB Upload] Erreur : ${code}\n` +
+        `Contexte : page HTML qui envoie des fichiers vers Cloudinary (envoi non signé, preset ${UPLOAD_PRESET}).\n` +
+        `Problème : ${probleme}\n` +
+        `Solution proposée : ${solution}\n` +
+        `Règle : le design et le code de ce fichier ne doivent pas être modifiés, sauf pour corriger cette erreur.\n` +
+        `→ Copiez ce message et donnez-le à votre assistant IA.`
+      );
+    }
+
+    // !fiab : verification du format et de la taille
+    function verifier(f) {
+      const max = FORMATS[f.type];
+      if (!max) {
+        signalerErreur('FORMAT_REFUSE', `Le fichier « ${f.name} » n'est pas un JPG, PNG ou MP4.`, 'Convertir le fichier en JPG, PNG ou MP4, puis le renvoyer.');
+        return false;
+      }
+      if (f.size > max * 1048576) {
+        signalerErreur('FICHIER_TROP_LOURD', `Le fichier fait ${(f.size / 1048576).toFixed(1)} Mo, la limite est de ${max} Mo.`, 'Compresser le fichier, puis le renvoyer.');
+        return false;
+      }
+      return true;
+    }
+
+    // !fiab : envoi vers cloudinary
+    envoyer.addEventListener('click', async () => {
+      const f = fichier.files[0];
+      copier.hidden = true;
+
+      if (!f) return afficher("Choisissez d'abord un fichier.", 'erreur');
+      if (!verifier(f)) return;
+
+      const donnees = new FormData();
+      donnees.append('file', f);
+      donnees.append('upload_preset', UPLOAD_PRESET);
+
+      envoyer.disabled = true;
+      afficher('Envoi en cours, patientez…');
+
+      try {
+        const reponse = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, { method: 'POST', body: donnees });
+        const resultat = await reponse.json();
+
+        if (!reponse.ok) {
+          signalerErreur('REFUS_CLOUDINARY', `Cloudinary a refusé l'envoi : ${resultat.error?.message}`, 'Vérifier le Cloud Name, le nom du preset et les formats autorisés dans le preset Cloudinary.');
+          return;
+        }
+
+        lien = resultat.secure_url;
+        copier.textContent = 'Copier le lien';
+        copier.hidden = false;
+        afficher('Fichier envoyé. Copiez le lien ci-dessous.', 'succes');
+        console.log(`[FIAB Upload] Succès. Lien du fichier : ${lien}`);
+      } catch {
+        signalerErreur('CONNEXION', "Impossible de joindre le serveur d'envoi.", 'Vérifier la connexion internet, puis réessayer.');
+      } finally {
+        envoyer.disabled = false;
+      }
+    });
+
+    // !fiab : copie du lien
+    copier.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(lien);
+        copier.textContent = 'Lien copié';
+      } catch {
+        signalerErreur('COPIE_IMPOSSIBLE', 'Le navigateur a bloqué la copie du lien.', 'Ouvrir la page via une adresse https:// ou localhost, puis réessayer.');
+      }
+    });
+  </script>
+</body>
+
+</html>
