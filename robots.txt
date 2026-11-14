@@ -1,4 +1,4 @@
-# !fiab : directives d indexation des robots et agents ia
+# !fiab : directives d indexation des robots et des agents IA
 User-agent: *
 Allow: /
 
