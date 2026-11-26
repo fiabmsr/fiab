@@ -30,5 +30,5 @@ Le site présente mon parcours et mes travaux à travers quatre volets :
 
 - **Site web** : [https://fiab.website/](https://fiab.website/)
 - **Email** : [contact@fiab.website](mailto:contact@fiab.website)
-- **LinkedIn** : [Ives Fassinou](https://www.linkedin.com/in/fiab-entreprise)
+- **LinkedIn** : [Ives Fassinou](https://www.linkedin.com/in/ives-fassinou/)
 - **Facebook** : [Ives Fassinou](https://web.facebook.com/FassinouIves)
